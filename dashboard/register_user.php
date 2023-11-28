@@ -224,12 +224,12 @@ $_SESSION['userType'] = ['user'];
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-4 pl-1">
+                    <!--<div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label for="pwd_user">Upload ID Picture</label>
 	                      <input type="file" class="form control" id="avatar" name="avatar" /></span>
                       </div>
-                    </div>
+                    </div>-->
                   </div>
                   <div class="row">
                     <div class="col-md-6 pr-1">

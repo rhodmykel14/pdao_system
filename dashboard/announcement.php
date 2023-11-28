@@ -257,9 +257,13 @@ $result = mysqli_query($conn,$query);
                         <td>
                           <?php echo $row['announcementPlace']; ?>
                         </td>
-                        <td>
-                          <a href="#" class="btn btn-primary">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
+                        <td class="td-actions">
+                          <button type="button" rel="tooltip" class="btn btn-success btn-sm btn-icon">
+                              <i class="now-ui-icons ui-2_settings-90"></i>
+                          </button>
+                          <button type="button" rel="tooltip" class="btn btn-danger btn-sm btn-icon">
+                              <i class="now-ui-icons ui-1_simple-remove"></i>
+                          </button>
                         </td>
                       </tr>
                       <?php

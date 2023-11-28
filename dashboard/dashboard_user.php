@@ -1,19 +1,13 @@
 <?php
 
-session_start();
+  session_start();
 
-$_SESSION['username'] = ['rm.adalid'];
-$_SESSION['userType'] = ['admin'];
+  $_SESSION['username'] = 'pwd_user';
+  $_SESSION['userType'] = ['user'];
 
-require_once('../controller/connection/connection.php');
-
-if (isset($_GET['id'])){
-  $id=$_GET['id'];
-  $delete=mysqli_query($conn,"DELETE FROM 'announcement' WHERE 'id'='$id'");
-}
-
-$query = "select * from announcement";
-$result = mysqli_query($conn,$query);
+  require_once('../controller/connection/connection.php');
+  $query = "select * from announcement";
+  $result = mysqli_query($conn,$query);
 
 ?>
 
@@ -51,42 +45,19 @@ $result = mysqli_query($conn,$query);
         </a>
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
           PDAO SYSTEM<br>
-          <span style="margin-left:15%">Admin</span>
+          <span style="margin-left:15%">USER</span>
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-          <li class="">
+          <li class="active">
             <a href="./dashboard.php">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="dropdown-btn 1 ">
-            <a href="./user.php">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>Users</p>
-            </a>
-          </li>
           <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./benefits.php">
-            <i class="now-ui-icons location_map-big dropdown-menu-md-right"></i>
-            <p>Benefits </p></a>
-          </li>
-          <li class="dropdown-menu-md-right active" >
-            <a style="margin-bottom:3% !important;" href="./announcement.php">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Announcement</p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./reports.php">
-              <i class="now-ui-icons files_single-copy-04 dropdown-menu-md-right"></i>
-              <p>Generate Report </p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a href="./register.php" style="margin-bottom:3% !important;">
+            <a href="./register_user.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
               <p>Register</p>
             </a>
@@ -113,7 +84,7 @@ $result = mysqli_query($conn,$query);
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Announcement</a>
+            <a class="navbar-brand" href="#pablo">PWD Registration Form</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -148,7 +119,7 @@ $result = mysqli_query($conn,$query);
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Profile</a>
+                  <!--<a class="dropdown-item" href="#">Profile</a>-->
                   <a class="dropdown-item" href="#">Change Password</a>
                   <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
@@ -162,80 +133,26 @@ $result = mysqli_query($conn,$query);
       </div>
       <div class="content">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col">
             <div class="card">
               <div class="card-header">
-                <h5 class="title">Add Announcement</h5>
+                <h5 class="card-category">View Announcement</h5>
               </div>
-              <div class="card-body">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <form action="../controller/announcementController.php" method="POST" enctype="multipart/form-data">
-                      <div class="row">
-                        <div class="col-md-6 pr-1">
-                          <div class="form-group">
-                            Event Name:
-                            <input type="text" id="announcementName" name="announcementName" class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-md-6 pl-1">
-                          <div class="form-group">
-                            Event Date:
-                            <input type="date" id="announcementDate" name="announcementDate" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6 pr-1">
-                          <div class="form-group">
-                            Event Description:
-                            <input type="text" id="announcementDesc" name="announcementDesc" class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-md-6 pl-1">
-                          <div class="form-group">
-                            Event Place:
-                            <input type="text" id="announcementPlace" name="announcementPlace" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-4 pr-1">
-                          <button class="btn btn-primary">Submit</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="title">Announcement</h5>
-
-              </div>
-              <div class="card-body">
-              <div class="table-responsive">
+                <div class="card-body">
+                <div class="table-responsive">
                   <table class="table">
                     <thead class=" text-primary">
                       <th>
                         Event Name
                       </th>
                       <th>
-                        Event Date
+                        Action
                       </th>
                       <th>
                         Event Description
                       </th>
                       <th>
                         Event Place
-                      </th>
-                      <th>
-                        Action 
                       </th>
                     </thead>
                     <tbody>
@@ -256,10 +173,6 @@ $result = mysqli_query($conn,$query);
                         </td>
                         <td>
                           <?php echo $row['announcementPlace']; ?>
-                        </td>
-                        <td>
-                          <a href="#" class="btn btn-primary">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
                         </td>
                       </tr>
                       <?php

@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+
+$_SESSION['username'] = ['rm.adalid'];
+$_SESSION['userType'] = ['admin'];
+
 require_once('../controller/connection/connection.php');
 
 
@@ -50,7 +55,7 @@ require_once('../controller/connection/connection.php');
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="dropdown-btn 1 active">
+          <li class="dropdown-btn 1">
             <a href="./user.php">
               <i class="now-ui-icons users_single-02"></i>
               <p>Users</p>
@@ -67,7 +72,7 @@ require_once('../controller/connection/connection.php');
               <p>Announcement</p>
             </a>
           </li>
-          <li class="dropdown-menu-md-right">
+          <li class="dropdown-menu-md-right active">
             <a style="margin-bottom:3% !important;" href="./reports.php">
               <i class="now-ui-icons files_single-copy-04 dropdown-menu-md-right"></i>
               <p>Generate Report </p>
@@ -91,7 +96,7 @@ require_once('../controller/connection/connection.php');
     </div>
     <div class="main-panel" id="main-panel">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-blue  bg-primary  navbar-absolute">
+      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-toggle">
@@ -101,7 +106,7 @@ require_once('../controller/connection/connection.php');
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Reports List</a>
+            <a class="navbar-brand" href="#pablo">PWD Registration Form</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -109,6 +114,16 @@ require_once('../controller/connection/connection.php');
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <form>
+              <div class="input-group no-border">
+                <input type="text" value="" class="form-control" placeholder="Search...">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <i class="now-ui-icons ui-1_zoom-bold"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="#pablo">
@@ -120,47 +135,114 @@ require_once('../controller/connection/connection.php');
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons location_world"></i>
+                  <i class="now-ui-icons users_single-02"></i>
                   <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
+                    <span class="d-lg-none d-md-block">Profile</span>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <!--<a class="dropdown-item" href="#">Profile</a>-->
+                  <a class="dropdown-item" href="#">Change Password</a>
+                  <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#pablo">
-                  <i class="now-ui-icons users_single-02"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                  </p>
-                </a>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-</div>
      <!-- End Navbar -->
-<!-- things to add: structure of reports selection menu, 
-input fields when reports need more information, and refresh page on query fetch-->
- <!--   Core JS Files   -->
- <script src="../assets/js/core/jquery.min.js"></script>
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
+      <div class="panel-header panel-header-sm">
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="title">Generate Reports</h5>
+              </div>
+              <div class="card-body">
+                <form action="../controller/reportsController.php" method="POST">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="firstDropdown">Select Report Type:</label>
+                    <!--Refer second CSS file here for 2nd menu hide/drop-->
+                      <select id="firstDropdown" class="form-control" onchange="showSecondDropdown()">
+                        <option id="age" class="form-control" name="" value="option1">Age</option>
+                        <option id="dateApplied" class="form-control" name="" value="option2">Date of Registry Confirmation</option>
+                        <option id="educationalAttainment" class="form-control" name="" value="option3">Educational Attainment</option>
+                        <option id="empStatus" class="form-control" name="" value="option3">Employment Status</option>
+                        <option id="empCategory" class="form-control" name="" value="option3">Employment Categorie</option>
+                        <option id="empType" class="form-control" name="" value="option3">Employment Type</option>
+                        <option id="occupation" class="form-control" name="" value="option3">Occupation</option>
+                        <option id="org" class="form-control" name="" value="option3">Overseeing Organization</option>
+                      </select>
+                  </div>
+                  <!-- hidden/conditional dropdowns, referring CSS later -->
+                  <div class="form-group col-md-4" id="secondDropdown">
+                    <label for="nestedDropdown">Select Nested Option:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                </div>    
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>  
+      <footer class="footer">
+              <div class=" container-fluid ">
+                <nav>
+                  <ul>
+                    <li>
+                      <a href="https://www.creative-tim.com">
+                        Creative Tim
+                      </a>
+                    </li>
+                    <li>
+                      <a href="http://presentation.creative-tim.com">
+                        About Us
+                      </a>
+                    </li>
+                    <li>
+                      <a href="http://blog.creative-tim.com">
+                        Blog
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="copyright" id="copyright">
+                  &copy; <script>
+                    document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                  </script>, Designed by <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+        <!--   Core JS Files   -->
+        <script src="../assets/js/core/jquery.min.js"></script>
+        <script src="../assets/js/core/popper.min.js"></script>
+        <script src="../assets/js/core/bootstrap.min.js"></script>
+        <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+        <!--  Google Maps Plugin    -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+        <!-- Chart JS -->
+        <script src="../assets/js/plugins/chartjs.min.js"></script>
+        <!--  Notifications Plugin    -->
+        <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+        <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+        <script src="../assets/demo/demo.js"></script>
+        <script>
+          $(document).ready(function() {
+            // Javascript method's body can be found in assets/js/demos.js
+            demo.initDashboardPageCharts();
+
+          });
+        </script>
 </body>
 
-
+</html>

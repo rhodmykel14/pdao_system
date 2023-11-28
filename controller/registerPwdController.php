@@ -127,11 +127,36 @@ $sql = "INSERT INTO pwd(
     '$representativeName'
 )";
 
+
 if ($conn->query($sql) === TRUE) {
     header("Location: ../dashboard/dashboard.php");
     exit;
 } else {
   echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+//stuff for registration confirmation
+$sql = mysqli_query($conn, $insertQuery);if ($result) {
+    // get recently inserted row
+    $selectQuery = "SELECT * FROM pwd ORDER BY id DESC LIMIT 1";
+    $selectResult = mysqli_query($conn, $selectQuery);
+
+    // Cquery check
+    if ($selectResult) {
+        // data fetch
+        $row = mysqli_fetch_assoc($selectResult);
+
+        // data output
+        // dpat na-ay katong sms blast API dianhi
+        // ask ma'am cajes about SMS blast APIs w/ student plans? 
+
+        // clear results
+        mysqli_free_result($selectResult);
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
+} else {
+    echo "Error: " . mysqli_error($conn);
 }
 
 

@@ -6,7 +6,7 @@
   $_SESSION['userType'] = ['user'];
 
   require_once('../controller/connection/connection.php');
-  $query = "select * from announcement";
+  $query = "SELECT * FROM announcement JOIN benefits";
   $result = mysqli_query($conn,$query);
 
 ?>
@@ -133,61 +133,121 @@
       </div>
       <div class="content">
         <div class="row">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-category">View Announcement</h5>
-              </div>
-                <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead class=" text-primary">
-                      <th>
-                        Event Name
-                      </th>
-                      <th>
-                        Action
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                      <?php
-
-                      while($row = mysqli_fetch_assoc($result))
-                            {
-                      ?>
-                        <td>
-                          <?php echo $row['announcementName']; ?>
-                        </td>
-                        <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Details</button>
-                        </td>
-                      </tr>
-                      <?php
-                            }
-                      ?>
-                      
-                    </tbody>
-                  </table>
-                </div>
-                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        
-                      </div>
+            <div class="col md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-category">View Announcement</h5>
                     </div>
-                  </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Event Name
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </thead>
+                                <tbody>
+                                <?php
+                                  $query_run = mysqli_query($conn, $query);
+
+                                  if(mysqli_num_rows($query_run) > 0)
+                                  {
+                                    foreach($query_run as $announcement)
+                                    {
+                                      ?>
+                                      <tr>
+                                        <td><?= $announcement['announcementName']; ?></td>
+                                        <td>
+                                          <a data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>" class="btn btn-success btn-sm">Details</a>
+                                          <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>">Details</button>-->
+                                        </td>
+                                      </tr>
+                                      <?php
+                                    }
+                                  }
+                                  else
+                                  {
+                                    echo "<h5> No Record Found. </h5>";
+                                  }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php
+                          // Reset the result pointer to the beginning
+                          mysqli_data_seek($query_run, 0);
+
+                          // Loop through the results again for modals
+                          foreach ($query_run as $announcement) {
+                        ?>
+                          <div class="modal fade" id="myModal<?= $announcement['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="announcementdeets" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="announcementdeets">Event Details</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <b><?= $announcement['announcementName']; ?></b><hr />
+                                  <p><b>Date: </b><?= $announcement['announcementDate']; ?><br />
+                                  <b>Place: </b><?= $announcement['announcementPlace']; ?><br /> <br/>
+                                  <b>Event Description:</b> </br>
+                                  <?= $announcement['announcementDesc']; ?></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <?php
+                          }
+                        ?>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+            <div class="col md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-category">View Benefits</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                        Benefit Name
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $result = mysqli_query($conn, $query); // assuming $query is defined earlier
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo $row['benefitName']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['benefitDescription']; ?>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       <footer class="footer">

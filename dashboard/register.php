@@ -1,20 +1,41 @@
+<?php
 
-<!--
+session_start();
 
-=========================================================
-* Now UI Dashboard - v1.5.0
-=========================================================
+$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
+$_SESSION['userType'] = ['admin'];
 
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard
-* Copyright 2019 Creative Tim (http://www.creative-tim.com)
+function generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo) {
+  // Validate input codes
+  if (!isValidCode($regionCode, 2) || !isValidCode($provinceCode, 2) ||
+      !isValidCode($municipalityCode, 2) || !isValidCode($barangayCode, 3) ||
+      !isValidCode($sequentialNo, 3)) {
+      return "Invalid input codes.";
+  }
 
-* Designed by www.invisionapp.com Coded by www.creative-tim.com
+  // Concatenate codes to form the PWD ID Number
+  $pwdIDNumber = sprintf("%02d-%02d%02d-%03d-%07d", $regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
 
-=========================================================
+  return $pwdIDNumber;
+}
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+function isValidCode($code, $length) {
+  // Validate code length and numeric format
+  return is_numeric($code) && strlen($code) === $length;
+}
 
--->
+// Example usage
+$regionCode = 10;
+$provinceCode = 03;
+$municipalityCode = 03;
+$barangayCode = 004;
+$sequentialNo = 123;
+
+$pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -140,24 +161,16 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons location_world"></i>
+                  <i class="now-ui-icons users_single-02"></i>
                   <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
+                    <span class="d-lg-none d-md-block">Profile</span>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <!--<a class="dropdown-item" href="admin_profile.php">Profile</a>-->
+                  <a class="dropdown-item" href="change_password.php">Change Password</a>
+                  <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./admin_profile.html">
-                  <i class="now-ui-icons users_single-02"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                  </p>
-                </a>
               </li>
             </ul>
           </div>
@@ -179,7 +192,7 @@
                     <div class="col">
                       <div class="form-check form-check-radio">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="accountType" id="new_applicant" value="new" checked>
+                            <input class="form-check-input" type="radio" name="accountType" id="new" value="new" checked>
                             New Applicant
                             <span class="form-check-sign"></span>
                         </label>
@@ -192,13 +205,13 @@
                     </div>
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Person with Disability Number</label>
-                        <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN">
+                          <label for="pwd">Person with Disability Number</label>
+                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo $pwdIDNumber; ?>" readonly>
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-group">
-                        <label for="pwd_user" type="date_applied">Date Applied</label>
+                        <label for="pwd" type="date_applied">Date Applied</label>
                         <input type="date" class="form-control" id="dateApplied" name="dateApplied" placeholder="date">
                       </div>
                     </div>
@@ -207,19 +220,19 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Last Name</label>
+                        <label for="pwd">Last Name</label>
                         <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">First Name</label>
+                        <label for="pwd">First Name</label>
                         <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Middle Name</label>
+                        <label for="pwd">Middle Name</label>
                         <input type="text" class="form-control" id="middleName" name="middleName" placeholder="" >
                       </div>
                     </div>
@@ -227,23 +240,23 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Suffix</label>
+                        <label for="pwd">Suffix</label>
                         <input type="text" class="form-control" id="suffix" name="suffix" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">Date of Birth</label>
+                        <label for="pwd">Date of Birth</label>
                         <input type="date" class="form-control" id="birthDate" name="birthDate" placeholder="dob">
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Sex</label>
+                        <label for="pwd">Sex</label>
                         <select class="form-control" id="gender" name="gender">
                           <option selected>Select Gender</option>
-                          <option id="male" name="0" value="0">Male</option>
-                          <option id="female" name="1" value="1">Female</option>
+                          <option id="male" name="gender" value="Male">Male</option>
+                          <option id="female" name="gender" value="Female">Female</option>
                         </select>
                       </div>
                     </div>
@@ -251,14 +264,14 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Civil Status</label>
+                        <label for="pwd">Civil Status</label>
                         <select class="form-control" id="civilStatus" name="civilStatus">
                           <option selected>Select Status</option>
-                          <option id="single`" name="1" value="1">Single</option>
-                          <option id="separated" name="2" value="2">Separated</option>
-                          <option id="cohab" name="3" value="3">Cohabitation (live-in)</option>
-                          <option id="married" name="4" value="4">Married</option>
-                          <option id="widowed" name="5" value="5">Widow/er</option>
+                          <option id="single" name="civilStatus" value="Single">Single</option>
+                          <option id="separated" name="civilStatus" value="Separated">Separated</option>
+                          <option id="cohab" name="civilStatus" value="Cohabitation (live-in)">Cohabitation (live-in)</option>
+                          <option id="married" name="civilStatus" value="Married">Married</option>
+                          <option id="widowed" name="civilStatus" value="Widow/er">Widow/er</option>
                         </select>
                       </div>
                     </div>
@@ -266,34 +279,34 @@
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Type of Disability</label>
+                        <label for="pwd">Type of Disability</label>
                         <select class="form-control" id="disabilityType" name="disabilityType">
                           <option selected>Select Type</option>
-                          <option id="deaf" name="deaf" value="1">Deaf or Hard of Hearling</option>
-                          <option id="intel" name="intellectual" value="2">Intellectual Disability</option>
-                          <option id="learning" name="learning" value="3">Learning Disability</option>
-                          <option id="mental" name="mental" value="4">Mental Disability</option>
-                          <option id="physical" name="physical" value="5">Physical Disability</option>
-                          <option id="psycho" name="psycho" value="6">Psychosocial Disability</option>
-                          <option id="speech" name="speech" value="7">Speach and Language Impairment</option>
-                          <option id="visual" name="visual" value="8">Visual Disability</option>
-                          <option id="cancer" name="cancer" value="9">Cancer (RA 11215)</option>
-                          <option id="rared" name="rared" value="10">Rare Disease (RA 10747)</option>
+                          <option id="deaf" name="disabilityType" value="Deaf or Hard of Hearling">Deaf or Hard of Hearling</option>
+                          <option id="intel" name="disabilityType" value="Intellectual Disability">Intellectual Disability</option>
+                          <option id="learning" name="disabilityType" value="Learning Disability">Learning Disability</option>
+                          <option id="mental" name="disabilityType" value="Mental Disability">Mental Disability</option>
+                          <option id="physical" name="disabilityType" value="Physical Disability">Physical Disability</option>
+                          <option id="psycho" name="disabilityType" value="Psychosocial Disability">Psychosocial Disability</option>
+                          <option id="speech" name="disabilityType" value="Speach and Language Impairment">Speach and Language Impairment</option>
+                          <option id="visual" name="disabilityType" value="Visual Disability">Visual Disability</option>
+                          <option id="cancer" name="disabilityType" value="Cancer (RA 11215)">Cancer (RA 11215)</option>
+                          <option id="rared" name="disabilityType" value="Rare Disease (RA 10747)">Rare Disease (RA 10747)</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Cause of Disability</label>
+                        <label for="pwd">Cause of Disability</label>
                         <select class="form-control" id="disabilityCause" name="disabilityCause">
                           <option selected>Select Cause</option>
-                          <option id="autism" name="autism" value="1">Autism</option>
-                          <option id="adhd" name="adhd" value="2">ADHD</option>
-                          <option id="downsyn" name="downsyn" value="3">Down Syndrome</option>
-                          <option id="chronic" name="chronic" value="4">Chronic Illness</option>
-                          <option id="cerebral" name="cerebral" value="5">Cerebral Palsy</option>
-                          <option id="injury" name="injury" value="6">Injury</option>
-                          <option id="others" name="others" value="7">Others</option>
+                          <option id="autism" name="disabilityCause" value="Autism">Autism</option>
+                          <option id="adhd" name="disabilityCause" value="ADHD">ADHD</option>
+                          <option id="downsyn" name="disabilityCause" value="Down Syndrome">Down Syndrome</option>
+                          <option id="chronic" name="disabilityCause" value="Chronic Illness">Chronic Illness</option>
+                          <option id="cerebral" name="disabilityCause" value="Cerebral Palsy">Cerebral Palsy</option>
+                          <option id="injury" name="disabilityCause" value="Injury">Injury</option>
+                          <option id="others" name="disabilityCause" value="Others">Others</option>
                         </select>
                       </div>
                     </div>
@@ -304,13 +317,13 @@
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">House No. and Street</label>
+                        <label for="pwd">House No. and Street</label>
                         <input type="text" class="form-control" id="houseNumber" name="houseNumber" placeholder="House No. & Street">
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Barangay</label>
+                        <label for="pwd">Barangay</label>
                         <input type="text" class="form-control" id="barangay" name="barangay" placeholder="Barangay">
                       </div>
                     </div>
@@ -361,38 +374,38 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Educational Attainment</label>
+                        <label for="pwd">Educational Attainment</label>
                         <select class="form-control" id="educationalAttainment" name="educationalAttainment">
                           <option selected>Select Attainment</option>
-                          <option id="none" name="none" value="1">None</option>
-                          <option id="kinder" name="kinder" value="2">Kindergarten</option>
-                          <option id="elem" name="elem" value="3">Elementary</option>
-                          <option id="jhs" name="jhs" value="4">Junior High School</option>
-                          <option id="shs" name="shs" value="5">Senior High School</option>
-                          <option id="college" name="college" value="6">College</option>
-                          <option id="voc" name="voc" value="7">Vocational / Technical</option>
-                          <option id="postgrad" name="postgrad" value="8">Post Graduate</option>
+                          <option id="none" name="educationalAttainment" value="None">None</option>
+                          <option id="kinder" name="educationalAttainment" value="Kindergarten">Kindergarten</option>
+                          <option id="elem" name="educationalAttainment" value="Elementary">Elementary</option>
+                          <option id="jhs" name="educationalAttainment" value="Junior High School">Junior High School</option>
+                          <option id="shs" name="educationalAttainment" value="Senior High School">Senior High School</option>
+                          <option id="college" name="educationalAttainment" value="College">College</option>
+                          <option id="voc" name="educationalAttainment" value="Vocational / Technical">Vocational / Technical</option>
+                          <option id="postgrad" name="educationalAttainment" value="Post Graduate">Post Graduate</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">Status of Employment</label>
+                        <label for="pwd">Status of Employment</label>
                         <select class="form-control" id="employmentStatus" name="employmentStatus">
                           <option selected>Select Status</option>
-                          <option id="employed" name="employed" value="1">Employed</option>
-                          <option id="unemployed" name="unemployed" value="2">Unemployed</option>
-                          <option id="selfemployed" name="selfemployed" value="3">Self-Employed</option>
+                          <option id="employed" name="employmentStatus" value="Employed">Employed</option>
+                          <option id="unemployed" name="employmentStatus" value="Unemployed">Unemployed</option>
+                          <option id="selfemployed" name="employmentStatus" value="Self-Employed">Self-Employed</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Category of Employment</label>
+                        <label for="pwd">Category of Employment</label>
                         <select class="form-control" id="employmentCategory" name="employmentCategory">
                           <option selected>Select Category</option>
-                          <option id="government" name="government" value="1">Government</option>
-                          <option id="private" name="private" value="2">Private</option>
+                          <option id="government" name="employmentCategory" value="Government">Government</option>
+                          <option id="private" name="employmentCategory" value="Private">Private</option>
                         </select>
                       </div>
                     </div>
@@ -400,31 +413,31 @@
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Types of Employment</label>
+                        <label for="pwd">Types of Employment</label>
                         <select class="form-control" id="employmentType" name="employmentType">
                           <option selected>Select Type</option>
-                          <option id="permanent" name="permanent" value="1">Permanent / Regular</option>
-                          <option id="seasonal" name="seasonal" value="2">Seasonal</option>
-                          <option id="casual" name="casual" value="3">Casual</option>
-                          <option id="emergency" name="emergency" value="4">Emergency</option>
+                          <option id="permanent" name="employmentType" value="Permanent / Regular">Permanent / Regular</option>
+                          <option id="seasonal" name="employmentType" value="Seasonal">Seasonal</option>
+                          <option id="casual" name="employmentType" value="Casual">Casual</option>
+                          <option id="emergency" name="employmentType" value="Emergency">Emergency</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Occupation</label>
+                        <label for="pwd">Occupation</label>
                         <select class="form-control" id="occupation" name="occupation">
                           <option selected>Select Occupation</option>
-                          <option id="managers" name="managers" value="1">Managers</option>
-                          <option id="professional" name="professional" value="2">Professionals</option>
-                          <option id="technician" name="technician" value="3">Technicians and Associate Professionals</option>
-                          <option id="clerical" name="clerical" value="4">Clerical Support Workers</option>
-                          <option id="service" name="service" value="5">Service and Sales Workers</option>
-                          <option id="agri" name="agri" value="6">Skilled Agricultural, Forestry and Fishery Workers</option>
-                          <option id="craft" name="craft" value="7">Crat and Related Trade Workers</option>
-                          <option id="plant" name="plant" value="8">Plant and Machine Operators and Assemblers</option>
-                          <option id="elementary" name="elementary" value="9">Elementary Occupations</option>
-                          <option id="afo" name="afo" value="10">Armed Forces Occupations</option>
+                          <option id="managers" name="occupation" value="Managers">Managers</option>
+                          <option id="professional" name="occupation" value="Professionals">Professionals</option>
+                          <option id="technician" name="occupation" value="Technicians and Associate Professionals">Technicians and Associate Professionals</option>
+                          <option id="clerical" name="occupation" value="Clerical Support Workers">Clerical Support Workers</option>
+                          <option id="service" name="occupation" value="Service and Sales Workers">Service and Sales Workers</option>
+                          <option id="agri" name="occupation" value="Skilled Agricultural, Forestry and Fishery Workers">Skilled Agricultural, Forestry and Fishery Workers</option>
+                          <option id="craft" name="occupation" value="Craft and Related Trade Workers">Craft and Related Trade Workers</option>
+                          <option id="plant" name="occupation" value="Plant and Machine Operators and Assemblers">Plant and Machine Operators and Assemblers</option>
+                          <option id="elementary" name="occupation" value="Elementary Occupations">Elementary Occupations</option>
+                          <option id="afo" name="occupation" value="Armed Forces Occupations">Armed Forces Occupations</option>
                         </select>
                       </div>
                     </div>
@@ -435,13 +448,13 @@
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Organization Affiliated</label>
+                        <label for="pwd">Organization Affiliated</label>
                         <input type="text" class="form-control" id="orgAffiliated" name="orgAffiliated" placeholder="">
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Contact Person</label>
+                        <label for="pwd">Contact Person</label>
                         <input type="text" class="form-control" id="orgContactPerson" name="orgContactPerson" placeholder="">
                       </div>
                     </div>
@@ -449,13 +462,13 @@
                   <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Office Address</label>
+                        <label for="pwd">Office Address</label>
                         <input type="text" class="form-control" id="orgOfficeAddress" name="orgOfficeAddress" placeholder="">
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Contact Number</label>
+                        <label for="pwd">Contact Number</label>
                         <input type="number" class="form-control" id="orgContactNumber" name="orgContactNumber" placeholder="">
                       </div>
                     </div>
@@ -466,19 +479,19 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">SSS Number</label>
+                        <label for="pwd">SSS Number</label>
                         <input type="text" class="form-control" id="sssNumber" name="sssNumber" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">GSIS Number</label>
+                        <label for="pwd">GSIS Number</label>
                         <input type="text" class="form-control" id="gsisNumber" name="gsisNumber" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">PAG-IBIG Number</label>
+                        <label for="pwd">PAG-IBIG Number</label>
                         <input type="text" class="form-control" id="pagibigNumber" name="pagibigNumber" placeholder="" >
                       </div>
                     </div>
@@ -486,13 +499,13 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">PhilSys No.</label>
+                        <label for="pwd">PhilSys No.</label>
                         <input type="text" class="form-control" id="philsysNumber" name="philsysNumber" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">PhilHealth No.</label>
+                        <label for="pwd">PhilHealth No.</label>
                         <input type="text" class="form-control" id="philhealthNumber" name="philhealthNumber" placeholder="" >
                       </div>
                     </div>
@@ -503,19 +516,19 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Father's Name</label>
+                        <label for="pwd">Father's Name</label>
                         <input type="text" class="form-control" id="fathersName" name="fathersName" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">Mother's Name</label>
+                        <label for="pwd">Mother's Name</label>
                         <input type="text" class="form-control" id="mothersName" name="mothersName" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Guardian's Name</label>
+                        <label for="pwd">Guardian's Name</label>
                         <input type="text" class="form-control" id="guardiansName" name="guardiansName" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
@@ -526,26 +539,37 @@
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Applicant</label>
+                        <label for="pwd">Applicant</label>
                         <input type="text" class="form-control" id="applicantName" name="applicantName" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
-                        <label for="pwd_user">Guardian</label>
+                        <label for="pwd">Guardian</label>
                         <input type="text" class="form-control" id="guardiansName_2" name="guardiansName_2" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
-                        <label for="pwd_user">Representative</label>
+                        <label for="pwd">Representative</label>
                         <input type="text" class="form-control" id="representativeName" name="representativeName" placeholder="Last Name, First Name, M.I." >
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-4 pr-1">
-                      <button class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                          <label for="pwd">Status</label>
+                          <select class="form-control" id="pwdStatus" name="pwdStatus">
+                            <option selected>Select Status</option>
+                            <option id="employed" name="pwdStatus" value="Active">Active</option>
+                            <option id="unemployed" name="pwdStatus" value="Inactive">Inactive</option>
+                            <option id="selfemployed" name="pwdStatus" value="Deceased">Deceased</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <button class="btn btn-primary" type="submit" name="savePWDUser">Submit</button>
                     </div>
                   </div>
                 </form>

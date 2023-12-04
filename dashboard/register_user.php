@@ -154,8 +154,8 @@ $_SESSION['userType'] = ['user'];
                     </div>
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
-                        <label for="pwd_user">Person with Disability Number</label>
-                        <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN">
+                          <label for="pwd_user">Person with Disability Number</label>
+                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo $pwdIDNumber; ?>" readonly>
                       </div>
                     </div>
                     <div class="col">
@@ -224,12 +224,6 @@ $_SESSION['userType'] = ['user'];
                         </select>
                       </div>
                     </div>
-                    <!--<div class="col-md-4 pl-1">
-                      <div class="form-group">
-                        <label for="pwd_user">Upload ID Picture</label>
-	                      <input type="file" class="form control" id="avatar" name="avatar" /></span>
-                      </div>
-                    </div>-->
                   </div>
                   <div class="row">
                     <div class="col-md-6 pr-1">
@@ -513,15 +507,25 @@ $_SESSION['userType'] = ['user'];
                   </div>
                   <div class="row">
                     <div class="col-md-4 pr-1">
-                      <button class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                          <label for="pwd">Status</label>
+                          <select class="form-control" id="pwdStatus" name="pwdStatus">
+                            <option selected>Select Status</option>
+                            <option id="employed" name="pwdStatus" value="Active">Active</option>
+                            <option id="unemployed" name="pwdStatus" value="Inactive">Inactive</option>
+                            <option id="selfemployed" name="pwdStatus" value="Deceased">Deceased</option>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <button class="btn btn-primary" type="submit" name="savePWDUser">Submit</button>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
           </div>
-          
-      </div>
+        </div>
       <footer class="footer">
         <div class=" container-fluid ">
           <nav>

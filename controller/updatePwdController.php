@@ -2,10 +2,20 @@
 
 session_start();
 
-include('connection/connection.php');
+include '../connection/connection.php';
+/*$pwdID = $_GET['id'];
+$update = "SELECT * FROM pwd WHERE id = $pwdID";
+$updatequery = mysqli_query($conn, $update);
+$result = mysqli_fetch_assoc($updatequery);*/
 
-if(isset($_POST['savePWDUser']))
-{
+$pwdID = $_GET['id'];
+$updateQuery = "SELECT * FROM pwd WHERE id = '$pwdID' ";
+$updateResult = mysqli_query($conn, $updateQuery);
+$result = mysqli_fetch_assoc($updateResult);
+
+
+if(isset($_POST['updatePWDuser'])){
+    $pwdID = $_GET['id'];
     $pwdNumber = mysqli_real_escape_string($conn, $_POST['pwdNumber']);
     $dateApplied = mysqli_real_escape_string($conn, $_POST['dateApplied']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -47,106 +57,72 @@ if(isset($_POST['savePWDUser']))
     $representativeName = mysqli_real_escape_string($conn, $_POST['representativeName']);
     $pwdStatus = mysqli_real_escape_string($conn, $_POST['pwdStatus']);
 
-    $query = "INSERT INTO pwd(
-        accountType,
-        pwdNumber,
-        dateApplied,
-        lastName,
-        firstName,
-        middleName,
-        suffix,
-        birthDate,
-        gender,
-        civilStatus,
-        disabilityType,
-        disabilityCause,
-        houseNumber,
-        barangay,
-        city,
-        province,
-        region,
-        landlineNumber,
-        mobileNumber,
-        email,
-        educationalAttainment,
-        employmentStatus,
-        employmentCategory,
-        employmentType,
-        occupation,
-        orgAffiliated,
-        orgContactPerson,
-        orgOfficeAddress,
-        orgContactNumber,
-        sssNumber,
-        gsisNumber,
-        pagibigNumber,
-        philsysNumber,
-        philhealthNumber,
-        fathersName,
-        mothersName,
-        guardiansName,
-        applicantName,
-        guardiansName_2,
-        representativeName,
-        pwdStatus
-    ) VALUES (
-        '$accountType',
-        '$pwdNumber',
-        '$dateApplied',
-        '$lastName',
-        '$firstName',
-        '$middleName',
-        '$suffix',
-        '$birthDate',
-        '$gender',
-        '$civilStatus',
-        '$disabilityType',
-        '$disabilityCause',
-        '$houseNumber',
-        '$barangay',
-        '$city',
-        '$province',
-        '$region',
-        '$landlineNumber',
-        '$mobileNumber',
-        '$email',
-        '$educationalAttainment',
-        '$employmentStatus',
-        '$employmentCategory',
-        '$employmentType',
-        '$occupation',
-        '$orgAffiliated',
-        '$orgContactPerson',
-        '$orgOfficeAddress',
-        '$orgContactNumber',
-        '$sssNumber',
-        '$gsisNumber',
-        '$pagibigNumber',
-        '$philsysNumber',
-        '$philhealthNumber',
-        '$fathersName',
-        '$mothersName',
-        '$guardiansName',
-        '$applicantName',
-        '$guardiansName_2',
-        '$representativeName',
-        '$pwdStatus'
-    )";
-    
-    $query_run = mysqli_query($conn,$query);
-    if($query_run)
-    {
-        $_SESSION['message'] = "PWD User Created Successfully!";
-        header("Location: ../dashboard/dashboard_user.php");
-        exit(0);
+    $insertquery =  "UPDATE SET pwd
+	  accountType='$accountType',
+	  pwdNumber='$pwdNumber',
+	  dateApplied='$dateApplied',
+	  lastName='$lastName',
+	  firstName='$firstName',
+	  middleName='$middleName',
+	  suffix='$suffix',
+	  birthDate='$birthDate',
+	  gender='$gender',
+	  civilStatus='$civilStatus',
+	  disabilityType='$disabilityType',
+	  disabilityCause='$disabilityCause',
+	  houseNumber='$houseNumber',
+	  barangay='$barangay',
+	  city='$city',
+	  province='$province',
+	  region='$region',
+	  landlineNumber='$landlineNumber',
+	  mobileNumber='$mobileNumber',
+	  email='$email',
+	  educationalAttainment='$educationalAttainment',
+	  employmentStatus='$employmentStatus',
+	  employmentCategory='$employmentCategory',
+	  employmentType='$employmentType',
+	  occupation='$occupation',
+	  orgAffiliated='$orgAffiliated',
+	  orgContactPerson='$orgContactPerson',
+	  orgOfficeAddress='$orgOfficeAddress',
+	  orgContactNumber='$orgContactNumber',
+	  sssNumber='$sssNumber',
+	  gsisNumber='$gsisNumber',
+	  pagibigNumber='$pagibigNumber',
+	  philsysNumber='$philsysNumber',
+	  philhealthNumber='$philhealthNumber',
+	  fathersName='$fathersName',
+	  mothersName='$mothersName',
+	  guardiansName='$guardiansName',
+	  applicantName='$applicantName',
+	  guardiansName_2='$guardiansName_2',
+	  representativeName='$representativeName',
+	  pwdStatus='$pwdStatus'
+
+	  WHERE id='$pwdID'
+  ";
+        $mysqliquery = mysqli_query($conn, $insertquery);
+    if($insertquery){
+        ?>
+    <script>
+        window.location.replace("staff_editPWD.php");
+    </script>
+
+<?php 
+
+    }else{
+        echo 'Not Updated';
     }
-    else
-    {
-        $_SESSION['message'] = "PWD User Not Created Successfully!";
-        header("Location: ../dashboard/dashboard_user.php");
-        exit(0);
-    }
+
+
+
 }
+
+
+
+
+?>
 
 /*$accountType = $_POST['accountType'];
 $pwdNumber = $_POST['pwdNumber'];
@@ -274,15 +250,15 @@ $sql = "INSERT INTO pwd(
 )";*/
 
 
-if ($conn->query($query) === TRUE) {
+/*if ($conn->query($sql) === TRUE) {
     header("Location: ../dashboard/dashboard.php");
     exit;
 } else {
-  echo "Error: " . $query . "<br>" . $conn->error;
+  echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
 //stuff for registration confirmation
-$query = mysqli_query($conn, $insertQuery);if ($result) {
+$sql = mysqli_query($conn, $insertQuery);if ($result) {
     // get recently inserted row
     $selectQuery = "SELECT * FROM pwd ORDER BY id DESC LIMIT 1";
     $selectResult = mysqli_query($conn, $selectQuery);

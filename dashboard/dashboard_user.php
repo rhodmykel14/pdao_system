@@ -1,14 +1,16 @@
 <?php
-
   session_start();
 
   $_SESSION['username'] = 'pwd_user';
   $_SESSION['userType'] = ['user'];
 
   require_once('../controller/connection/connection.php');
-  $query = "SELECT * FROM announcement JOIN benefits";
-  $result = mysqli_query($conn,$query);
 
+  $announcementQuery = "SELECT * FROM announcement";
+  $benefitQuery = "SELECT * FROM benefits";
+
+  $announcementResult = mysqli_query($conn, $announcementQuery);
+  $benefitResult = mysqli_query($conn, $benefitQuery);
 ?>
 
 <!DOCTYPE html>
@@ -133,55 +135,48 @@
       </div>
       <div class="content">
         <div class="row">
-            <div class="col md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-category">View Announcement</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <th>
-                                        Event Name
-                                    </th>
-                                    <th>
-                                        Action
-                                    </th>
-                                </thead>
-                                <tbody>
-                                <?php
-                                  $query_run = mysqli_query($conn, $query);
-
-                                  if(mysqli_num_rows($query_run) > 0)
-                                  {
-                                    foreach($query_run as $announcement)
-                                    {
-                                      ?>
-                                      <tr>
-                                        <td><?= $announcement['announcementName']; ?></td>
-                                        <td>
-                                          <a data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>" class="btn btn-success btn-sm">Details</a>
-                                          <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>">Details</button>-->
-                                        </td>
-                                      </tr>
-                                      <?php
-                                    }
-                                  }
-                                  else
-                                  {
-                                    echo "<h5> No Record Found. </h5>";
-                                  }
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
+          <div class="col md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-category">View Announcement</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <th>
+                        Event Name
+                      </th>
+                      <th>
+                        Action
+                      </th>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if ($announcementResult && mysqli_num_rows($announcementResult) > 0) {
+                        foreach ($announcementResult as $announcement) {
+                      ?>
+                          <tr>
+                            <td><?= $announcement['announcementName']; ?></td>
+                            <td>
+                              <a data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>" class="btn btn-success btn-sm">Details</a>
+                            </td>
+                          </tr>
+                      <?php
+                        }
+                      } else {
+                        echo "<h5>No Record Found.</h5>";
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
                         <?php
                           // Reset the result pointer to the beginning
-                          mysqli_data_seek($query_run, 0);
+                          mysqli_data_seek($announcementResult, 0);
 
                           // Loop through the results again for modals
-                          foreach ($query_run as $announcement) {
+                          foreach ($announcementResult as $announcement) {
                         ?>
                           <div class="modal fade" id="myModal<?= $announcement['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="announcementdeets" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -209,47 +204,44 @@
                 </div>
             </div>
             <div class="col md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-category">View Benefits</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class=" text-primary">
-                                    <th>
-                                        Benefit Name
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $result = mysqli_query($conn, $query); // assuming $query is defined earlier
-
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                    ?>
-                                        <tr>
-                                            <td>
-                                                <?php echo $row['benefitName']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['benefitDescription']; ?>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-category">View Benefits</h5>
                 </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                          Benefit Name
+                        </th>
+                        <th>
+                          Description
+                        </th>
+                      </thead>
+                      <tbody>
+                        <?php
+                        if ($benefitResult && mysqli_num_rows($benefitResult) > 0) {
+                          while ($row = mysqli_fetch_assoc($benefitResult)) {
+                        ?>
+                            <tr>
+                              <td><?= $row['benefitName']; ?></td>
+                              <td><?= $row['benefitDescription']; ?></td>
+                            </tr>
+                        <?php
+                          }
+                        } else {
+                          echo "<h5>No Benefit Record Found.</h5>";
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-      </div>
       <footer class="footer">
         <div class=" container-fluid ">
           <nav>

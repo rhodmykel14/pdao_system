@@ -2,7 +2,7 @@
 
 session_start();
 
-$_SESSION['username'] = ['rm.adalid'];
+$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
 $_SESSION['userType'] = ['admin'];
 
 require_once('../controller/connection/connection.php');
@@ -85,13 +85,12 @@ $result = mysqli_query($conn,$query);
               <p>Generate Report </p>
             </a>
           </li>
-          <li class="dropdown-menu-md-right">
-            <a href="./register.php" style="margin-bottom:3% !important;">
+          <li class="dropdown-menu-md-right ">
+            <a href="./registerForStaff.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
+              <p>Staff Registration</p>
             </a>
           </li>
-
           <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -219,58 +218,46 @@ $result = mysqli_query($conn,$query);
 
               </div>
               <div class="card-body">
-              <div class="table-responsive">
+                <div class="table-responsive">
                   <table class="table">
-                    <thead class=" text-primary">
-                      <th>
-                        Event Name
-                      </th>
-                      <th>
-                        Event Date
-                      </th>
-                      <th>
-                        Event Description
-                      </th>
-                      <th>
-                        Event Place
-                      </th>
-                      <th>
-                        Action 
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                      <?php
+                        <thead class=" text-primary">
+                        <tr>
+                          <td>Event Name</td>
+                          <td>Event Date</td>
+                          <td>Description</td>
+                          <td>Event Place</td>
+                          <td>Action</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $query_run = mysqli_query($conn, $query);
 
-                      while($row = mysqli_fetch_assoc($result))
+                          if(mysqli_num_rows($query_run) > 0)
+                          {
+                            foreach($query_run as $announcement)
                             {
-                      ?>
-                        <td>
-                          <?php echo $row['announcementName']; ?>
-                        </td>
-                        <td>
-                          <?php echo $row['announcementDate']; ?>
-                        </td>
-                        <td>
-                          <?php echo $row['announcementDesc']; ?>
-                        </td>
-                        <td>
-                          <?php echo $row['announcementPlace']; ?>
-                        </td>
-                        <td class="td-actions">
-                          <button type="button" rel="tooltip" class="btn btn-success btn-sm btn-icon">
-                              <i class="now-ui-icons ui-2_settings-90"></i>
-                          </button>
-                          <button type="button" rel="tooltip" class="btn btn-danger btn-sm btn-icon">
-                              <i class="now-ui-icons ui-1_simple-remove"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <?php
+                                //echo $pwd[]
+                                ?>
+                                <tr>
+                                  <td><?= $announcement['announcementName']; ?></td>
+                                  <td><?= $announcement['announcementDate']; ?></td>
+                                  <td><?= $announcement['announcementDesc']; ?></td>
+                                  <td><?= $announcement['announcementPlace']; ?></td>
+                                  <td>
+                                    <a href="staff_editPWD.php?<?= $pwd['id']?>" class="btn btn-success btn-sm">Edit</a>
+                                    <a href="" class="btn btn-danger btn-sm">Delete</a>
+                                  </td>
+                                </tr>
+                                <?php
                             }
-                      ?>
-                      
-                    </tbody>
+                          }
+                          else
+                          {
+                            echo "<h5> No Record Found. </h5>";
+                          }
+                          ?>
+                      </tbody> 
                   </table>
                 </div>
               </div>

@@ -5,15 +5,7 @@ session_start();
 $_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
 $_SESSION['userType'] = ['admin'];
 
-require_once('../controller/connection/connection.php');
 
-if (isset($_GET['id'])){
-  $id=$_GET['id'];
-  $delete=mysqli_query($conn,"DELETE FROM 'benefits' WHERE 'id'='$id'");
-}
-
-$query = "select * from benefits";
-$result = mysqli_query($conn,$query);
 
 ?>
 
@@ -68,7 +60,7 @@ $result = mysqli_query($conn,$query);
               <p>Users</p>
             </a>
           </li>
-          <li class="dropdown-menu-md-right active">
+          <li class="dropdown-menu-md-right">
             <a style="margin-bottom:3% !important;" href="./benefits.php">
             <i class="now-ui-icons location_map-big dropdown-menu-md-right"></i>
             <p>Benefits </p></a>
@@ -85,7 +77,7 @@ $result = mysqli_query($conn,$query);
               <p>Generate Report </p>
             </a>
           </li>
-          <li class="dropdown-menu-md-right">
+          <li class="dropdown-menu-md-right active">
             <a href="./registerForStaff.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
               <p>Staff Registration</p>
@@ -112,7 +104,7 @@ $result = mysqli_query($conn,$query);
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">BENEFITS</a>
+            <a class="navbar-brand" href="#pablo">PWD Staff Registration</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -160,109 +152,76 @@ $result = mysqli_query($conn,$query);
       <div class="panel-header panel-header-sm">
       </div>
       <div class="content">
-      <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="title">Add Benefits</h5>
-              </div>
-              <div class="card-body">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <form action="../controller/benefitsController.php" method="POST" enctype="multipart/form-data">
-                      <div class="row">
-                        <div class="col-md-6 pr-1">
-                          <div class="form-group">
-                            Benefit Name:
-                            <input type="text" id="benefitName" name="benefitName" class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-md-6 pl-1">
-                          <div class="form-group">
-                            Date Updated:
-                            <input type="date" id="benefitDate" name="benefitDate" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            Benefit Description:
-                            <input type="text" id="benefitDescription" name="benefitDescription" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-4 pr-1">
-                          <button class="btn btn-primary">Submit</button>
-                        </div>
-                      </div>
-                    </form>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col">
             <div class="card">
               <div class="card-header">
-                <h5 class="title">Benefit</h5>
-
+                <h5 class="title">PWD Staff Registration</h5>
               </div>
               <div class="card-body">
-              <div class="table-responsive">
-                  <table class="table">
-                    <thead class=" text-primary">
-                      <th>
-                        Benefit
-                      </th>
-                      <th>
-                        Description
-                      </th>
-                      <th>
-                        Date Created
-                      </th>
-                      <th>
-                        Action 
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                      <?php
-
-                      while($row = mysqli_fetch_assoc($result))
-                            {
-                      ?>
-                        <td>
-                          <b>
-                          <?php echo $row['benefitName']; ?>
-                          </b>
-                        </td>
-                        <td>
-                          <?php echo $row['benefitDescription']; ?>
-                        </td>
-                        <td>
-                          <?php echo $row['benefitDate']; ?>
-                        </td>
-                        <td>
-                          <a href="#" class="btn btn-primary">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
-                        </td>
-                      </tr>
-                      <?php
-                            }
-                      ?>
-                      
-                    </tbody>
-                  </table>
-                </div>
+                <form action="../controller/registerController.php" method="POST">
+                  <div class="row">
+                    <div class="col-md-4 pr-1">
+                      <div class="form-group">
+                        <label for="pwd">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="last Name" require>
+                      </div>
+                    </div>
+                    <div class="col-md-4 px-1">
+                      <div class="form-group">
+                        <label for="pwd">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" require >
+                      </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <div class="form-group">
+                        <label for="pwd">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" require>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 pr-1">
+                      <div class="form-group">
+                        <label for="pwd">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" require>
+                      </div>
+                    </div>
+                    <div class="col-md-4 px-1">
+                      <div class="form-group">
+                        <label for="pwd">Password</label>
+                        <input type="password" class="form-control form-control-user" id="inputPassword" name="password" placeholder="Password">
+                      </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <div class="form-group">
+                        <label for="pwd">Repeat Password</label>
+                        <input type="password" class="form-control form-control-user" id="repeatPassword" name="password" placeholder="Password">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 pr-1">
+                      <div class="form-group">
+                        <label for="pwd">Role</label>
+                        <select class="form-control" id="userType" name="userType">
+                          <option selected>Select Role</option>
+                          <option id="admin" name="userType" value="admin">Admin</option>
+                          <option id="staff" name="userType" value="staff">Staff</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 pl-1">
+                      <button class="btn btn-primary" type="submit" name="savePWDStaff">Submit</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        </div>
+          
       </div>
       <footer class="footer">
         <div class=" container-fluid ">
@@ -308,13 +267,6 @@ $result = mysqli_query($conn,$query);
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-
-    });
-  </script>
 </body>
 
 </html>

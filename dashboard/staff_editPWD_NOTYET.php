@@ -2,36 +2,8 @@
 
 session_start();
 
-$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
-$_SESSION['userType'] = ['admin'];
-
-function generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo) {
-  // Validate input codes
-  if (!isValidCode($regionCode, 2) || !isValidCode($provinceCode, 2) ||
-      !isValidCode($municipalityCode, 2) || !isValidCode($barangayCode, 3) ||
-      !isValidCode($sequentialNo, 3)) {
-      return "Invalid input codes.";
-  }
-
-  // Concatenate codes to form the PWD ID Number
-  $pwdIDNumber = sprintf("%02d-%02d%02d-%03d-%07d", $regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
-
-  return $pwdIDNumber;
-}
-
-function isValidCode($code, $length) {
-  // Validate code length and numeric format
-  return is_numeric($code) && strlen($code) === $length;
-}
-
-// Example usage
-$regionCode = 10;
-$provinceCode = 03;
-$municipalityCode = 03;
-$barangayCode = 004;
-$sequentialNo = 123;
-
-$pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
+$_SESSION['username'] = ['pwdstaff'];
+$_SESSION['userType'] = ['staff'];
 
 
 ?>
@@ -47,6 +19,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
   <title>
     Now UI Dashboard by Creative Tim
   </title>
+  
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -59,6 +32,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
 </head>
 
 <body class="">
+  
   <div class="wrapper ">
     <div class="sidebar" data-color="blue">
       <!--
@@ -70,44 +44,21 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
         </a>
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
           PDAO SYSTEM<br>
-          <span style="margin-left:15%">Admin</span>
+          <span style="margin-left:15%">User</span>
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-          <li class="">
-            <a href="./dashboard.php">
-              <i class="now-ui-icons design_app"></i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="dropdown-btn 1 ">
-            <a href="./user.php">
+          <li class="dropdown-btn 1 active">
+            <a href="./staff_pwdUser.php">
               <i class="now-ui-icons users_single-02"></i>
-              <p>Users</p>
+              <p>PWD Users</p>
             </a>
           </li>
           <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./benefits.php">
-            <i class="now-ui-icons location_map-big dropdown-menu-md-right"></i>
-            <p>Benefits </p></a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./announcement.php">
+            <a style="margin-bottom:3% !important;" href="./staff_announcement.php">
               <i class="now-ui-icons ui-1_bell-53"></i>
               <p>Announcement</p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./reports.php">
-              <i class="now-ui-icons files_single-copy-04 dropdown-menu-md-right"></i>
-              <p>Generate Report </p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right active">
-            <a href="./register.php" style="margin-bottom:3% !important;">
-              <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
             </a>
           </li>
 
@@ -132,7 +83,12 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">PWD Registration Form</a>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">User Lists</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit PWD</li>
+              </ol>
+            </nav>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -179,6 +135,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
       <!-- End Navbar -->
       <div class="panel-header panel-header-sm">
       </div>
+      <!-- Edit PWD -->
       <div class="content">
         <div class="row">
           <div class="col">

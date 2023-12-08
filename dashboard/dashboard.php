@@ -6,7 +6,7 @@
   $_SESSION['userType'] = ['admin'];
 
   require_once('../controller/connection/connection.php');
-  $query = "select * from pwd";
+  $query = "SELECT * FROM pwd";
   $result = mysqli_query($conn,$query);
 
 ?>
@@ -80,12 +80,11 @@
             </a>
           </li>
           <li class="dropdown-menu-md-right">
-            <a href="./register.php" style="margin-bottom:3% !important;">
+            <a href="./registerForStaff.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
+              <p>Staff Registration</p>
             </a>
           </li>
-
           <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -107,7 +106,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">PWD Registration Form</a>
+            <a class="navbar-brand" href="#pablo">Admin Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -142,7 +141,7 @@
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="admin_profile.php">Profile</a>
+                  <!--<a class="dropdown-item" href="admin_profile.php">Profile</a>-->
                   <a class="dropdown-item" href="change_password.php">Change Password</a>
                   <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
@@ -359,9 +358,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="lineChartExample"></canvas>
-                </div>
+                <h1 style="text-align: center;">5</h1>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -388,9 +385,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="lineChartExample"></canvas>
-                </div>
+                <h1 style="text-align: center;">53</h1>
               </div>
               <div class="card-footer">
                 <div class="stats">

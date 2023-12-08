@@ -2,20 +2,25 @@
 
 session_start();
 
-include '../connection/connection.php';
-/*$pwdID = $_GET['id'];
-$update = "SELECT * FROM pwd WHERE id = $pwdID";
-$updatequery = mysqli_query($conn, $update);
-$result = mysqli_fetch_assoc($updatequery);*/
+$_SESSION['username'] = ['pwdstaff'];
+$_SESSION['userType'] = ['staff'];
 
-$pwdID = $_GET['id'];
-$updateQuery = "SELECT * FROM pwd WHERE id = '$pwdID' ";
+include('connection/connection.php');
+
+$id = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : null;
+
+if (!$id) {
+    // Handle the case where 'id' is not set
+    echo 'Invalid request: Missing ID parameter';
+    exit;
+}
+
+$updateQuery = "SELECT * FROM pwd WHERE id = '$id' ";
 $updateResult = mysqli_query($conn, $updateQuery);
 $result = mysqli_fetch_assoc($updateResult);
 
-
-if(isset($_POST['updatePWDuser'])){
-    $pwdID = $_GET['id'];
+if (isset($_POST['updatePWDUser'])) {
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
     $pwdNumber = mysqli_real_escape_string($conn, $_POST['pwdNumber']);
     $dateApplied = mysqli_real_escape_string($conn, $_POST['dateApplied']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -57,229 +62,58 @@ if(isset($_POST['updatePWDuser'])){
     $representativeName = mysqli_real_escape_string($conn, $_POST['representativeName']);
     $pwdStatus = mysqli_real_escape_string($conn, $_POST['pwdStatus']);
 
-    $insertquery =  "UPDATE SET pwd
-	  accountType='$accountType',
-	  pwdNumber='$pwdNumber',
-	  dateApplied='$dateApplied',
-	  lastName='$lastName',
-	  firstName='$firstName',
-	  middleName='$middleName',
-	  suffix='$suffix',
-	  birthDate='$birthDate',
-	  gender='$gender',
-	  civilStatus='$civilStatus',
-	  disabilityType='$disabilityType',
-	  disabilityCause='$disabilityCause',
-	  houseNumber='$houseNumber',
-	  barangay='$barangay',
-	  city='$city',
-	  province='$province',
-	  region='$region',
-	  landlineNumber='$landlineNumber',
-	  mobileNumber='$mobileNumber',
-	  email='$email',
-	  educationalAttainment='$educationalAttainment',
-	  employmentStatus='$employmentStatus',
-	  employmentCategory='$employmentCategory',
-	  employmentType='$employmentType',
-	  occupation='$occupation',
-	  orgAffiliated='$orgAffiliated',
-	  orgContactPerson='$orgContactPerson',
-	  orgOfficeAddress='$orgOfficeAddress',
-	  orgContactNumber='$orgContactNumber',
-	  sssNumber='$sssNumber',
-	  gsisNumber='$gsisNumber',
-	  pagibigNumber='$pagibigNumber',
-	  philsysNumber='$philsysNumber',
-	  philhealthNumber='$philhealthNumber',
-	  fathersName='$fathersName',
-	  mothersName='$mothersName',
-	  guardiansName='$guardiansName',
-	  applicantName='$applicantName',
-	  guardiansName_2='$guardiansName_2',
-	  representativeName='$representativeName',
-	  pwdStatus='$pwdStatus'
+    $updateQuery = "UPDATE pwd
+        SET pwdNumber='$pwdNumber',
+        dateApplied='$dateApplied',
+        lastName='$lastName',
+        firstName='$firstName',
+        middleName='$middleName',
+        suffix='$suffix',
+        birthDate='$birthDate',
+        gender='$gender',
+        civilStatus='$civilStatus',
+        disabilityType='$disabilityType',
+        disabilityCause='$disabilityCause',
+        houseNumber='$houseNumber',
+        barangay='$barangay',
+        city='$city',
+        province='$province',
+        region='$region',
+        landlineNumber='$landlineNumber',
+        mobileNumber='$mobileNumber',
+        email='$email',
+        educationalAttainment='$educationalAttainment',
+        employmentStatus='$employmentStatus',
+        employmentCategory='$employmentCategory',
+        employmentType='$employmentType',
+        occupation='$occupation',
+        orgAffiliated='$orgAffiliated',
+        orgContactPerson='$orgContactPerson',
+        orgOfficeAddress='$orgOfficeAddress',
+        orgContactNumber='$orgContactNumber',
+        sssNumber='$sssNumber',
+        gsisNumber='$gsisNumber',
+        pagibigNumber='$pagibigNumber',
+        philsysNumber='$philsysNumber',
+        philhealthNumber='$philhealthNumber',
+        fathersName='$fathersName',
+        mothersName='$mothersName',
+        guardiansName='$guardiansName',
+        applicantName='$applicantName',
+        guardiansName_2='$guardiansName_2',
+        representativeName='$representativeName',
+        pwdStatus='$pwdStatus'
+        WHERE id='$id'";
 
-	  WHERE id='$pwdID'
-  ";
-        $mysqliquery = mysqli_query($conn, $insertquery);
-    if($insertquery){
-        ?>
-    <script>
-        window.location.replace("staff_editPWD.php");
-    </script>
+    $updateResult = mysqli_query($conn, $updateQuery);
 
-<?php 
-
-    }else{
+    if ($updateResult) {
+        $_SESSION['message'] = "PWD Updated Successfully";
+        header("Location: ../dashboard/staff_editPWD.php");
+        exit(0);
+    } else {
         echo 'Not Updated';
     }
-
-
-
 }
-
-
-
-
-?>
-
-/*$accountType = $_POST['accountType'];
-$pwdNumber = $_POST['pwdNumber'];
-$dateApplied = $_POST['dateApplied'];
-$lastName = $_POST['lastName'];
-$firstName = $_POST['firstName'];
-$middleName = $_POST['middleName'];
-$suffix = $_POST['suffix'];
-$birthDate = $_POST['birthDate'];
-$gender = $_POST['gender'];
-$civilStatus = $_POST['civilStatus'];
-$disabilityType = $_POST['disabilityType'];
-$disabilityCause = $_POST['disabilityCause'];
-$houseNumber = $_POST['houseNumber'];
-$barangay = $_POST['barangay'];
-$city = $_POST['city'];
-$province = $_POST['province'];
-$region = $_POST['region'];
-$landlineNumber = $_POST['landlineNumber'];
-$mobileNumber = $_POST['mobileNumber'];
-$email = $_POST['email'];
-$educationalAttainment = $_POST['educationalAttainment'];
-$employmentStatus = $_POST['employmentStatus'];
-$employmentCategory = $_POST['employmentCategory'];
-$employmentType = $_POST['employmentType'];
-$occupation = $_POST['occupation'];
-$orgAffiliated = $_POST['orgAffiliated'];
-$orgContactPerson = $_POST['orgContactPerson'];
-$orgOfficeAddress = $_POST['orgOfficeAddress'];
-$orgContactNumber = $_POST['orgContactNumber'];
-$sssNumber = $_POST['sssNumber'];
-$gsisNumber= $_POST['gsisNumber'];
-$pagibigNumber = $_POST['pagibigNumber'];
-$philsysNumber = $_POST['philsysNumber'];
-$philhealthNumber = $_POST['philhealthNumber'];
-$fathersName = $_POST['fathersName'];
-$mothersName = $_POST['mothersName'];
-$guardiansName = $_POST['guardiansName'];
-$applicantName = $_POST['applicantName'];
-$guardiansName_2 = $_POST['guardiansName_2'];
-$representativeName = $_POST['representativeName'];
-
-$sql = "INSERT INTO pwd(
-    accountType,
-    pwdNumber,
-    dateApplied,
-    lastName,
-    firstName,
-    middleName,
-    suffix,
-    birthDate,
-    gender,
-    civilStatus,
-    disabilityType,
-    disabilityCause,
-    houseNumber,
-    barangay,
-    city,
-    province,
-    region,
-    landlineNumber,
-    mobileNumber,
-    email,
-    educationalAttainment,
-    employmentStatus,
-    employmentCategory,
-    employmentType,
-    occupation,
-    orgAffiliated,
-    orgContactPerson,
-    orgOfficeAddress,
-    orgContactNumber,
-    sssNumber,
-    gsisNumber,
-    pagibigNumber,
-    philsysNumber,
-    philhealthNumber,
-    fathersName,
-    mothersName,
-    guardiansName,
-    applicantName,
-    guardiansName_2,
-    representativeName
-) VALUES (
-    '$accountType',
-    '$pwdNumber',
-    '$dateApplied',
-    '$lastName',
-    '$firstName',
-    '$middleName',
-    '$suffix',
-    '$birthDate',
-    '$gender',
-    '$civilStatus',
-    '$disabilityType',
-    '$disabilityCause',
-    '$houseNumber',
-    '$barangay',
-    '$city',
-    '$province',
-    '$region',
-    '$landlineNumber',
-    '$mobileNumber',
-    '$email',
-    '$educationalAttainment',
-    '$employmentStatus',
-    '$employmentCategory',
-    '$employmentType',
-    '$occupation',
-    '$orgAffiliated',
-    '$orgContactPerson',
-    '$orgOfficeAddress',
-    '$orgContactNumber',
-    '$sssNumber',
-    '$gsisNumber',
-    '$pagibigNumber',
-    '$philsysNumber',
-    '$philhealthNumber',
-    '$fathersName',
-    '$mothersName',
-    '$guardiansName',
-    '$applicantName',
-    '$guardiansName_2',
-    '$representativeName'
-)";*/
-
-
-/*if ($conn->query($sql) === TRUE) {
-    header("Location: ../dashboard/dashboard.php");
-    exit;
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-//stuff for registration confirmation
-$sql = mysqli_query($conn, $insertQuery);if ($result) {
-    // get recently inserted row
-    $selectQuery = "SELECT * FROM pwd ORDER BY id DESC LIMIT 1";
-    $selectResult = mysqli_query($conn, $selectQuery);
-
-    // Cquery check
-    if ($selectResult) {
-        // data fetch
-        $row = mysqli_fetch_assoc($selectResult);
-
-        // data output
-        // dpat na-ay katong sms blast API dianhi
-        // ask ma'am cajes about SMS blast APIs w/ student plans? 
-
-        // clear results
-        mysqli_free_result($selectResult);
-    } else {
-        echo "Error: " . mysqli_error($conn);
-    }
-} else {
-    echo "Error: " . mysqli_error($conn);
-}
-
 
 ?>

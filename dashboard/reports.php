@@ -2,7 +2,7 @@
 
 session_start();
 
-$_SESSION['username'] = ['rm.adalid'];
+$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
 $_SESSION['userType'] = ['admin'];
 
 require_once('../controller/connection/connection.php');
@@ -78,13 +78,12 @@ require_once('../controller/connection/connection.php');
               <p>Generate Report </p>
             </a>
           </li>
-          <li class="dropdown-menu-md-right">
-            <a href="./register.php" style="margin-bottom:3% !important;">
+          <li class="dropdown-menu-md-right ">
+            <a href="./registerForStaff.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
+              <p>Staff Registration</p>
             </a>
           </li>
-
           <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -186,7 +185,8 @@ require_once('../controller/connection/connection.php');
                           <option class="form-control" value="nestedOption3">Nested Option 3</option>
                       </select>
                   </div>
-                </div>    
+                </div>
+                </form>    
               </div>
             </div>
           </div> 

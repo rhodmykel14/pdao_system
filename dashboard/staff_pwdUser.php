@@ -6,6 +6,12 @@ $_SESSION['username'] = ['pwdstaff'];
 $_SESSION['userType'] = ['staff'];
 
 require_once('../controller/connection/connection.php');
+
+if (isset($_GET['id'])){
+  $id=$_GET['id'];
+  $update=mysqli_query($conn,"UPDATE SET 'pwd' WHERE 'id'='$id'");
+}
+
 $query = "SELECT * FROM pwd";
 $result = mysqli_query($conn,$query);
 
@@ -188,7 +194,7 @@ $result = mysqli_query($conn,$query);
                       }
                       else
                       {
-                        echo "<h5> No Record Found. </h5>";
+                      echo "<h5> No Record Found. </h5>";
                       }
                       ?>
                   </tbody> 

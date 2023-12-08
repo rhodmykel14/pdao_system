@@ -1,9 +1,19 @@
 <?php
 
-require_once('../controller/connection/connection.php');
-$query = "select * from user";
-$result = mysqli_query($conn,$query);
+session_start();
 
+$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
+$_SESSION['userType'] = ['admin'];
+
+require_once('../controller/connection/connection.php');
+
+if (isset($_GET['id'])){
+  $id=$_GET['id'];
+  $delete=mysqli_query($conn,"DELETE FROM 'user' WHERE 'id'='$id'");
+}
+
+$query = "SELECT * FROM user";
+$result = mysqli_query($conn,$query);
 
 ?>
 
@@ -27,6 +37,8 @@ $result = mysqli_query($conn,$query);
   <link href="../assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  
+
 </head>
 
 <body class="">
@@ -70,18 +82,17 @@ $result = mysqli_query($conn,$query);
             </a>
           </li>
           <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./reports.html">
+            <a style="margin-bottom:3% !important;" href="./reports.php">
               <i class="now-ui-icons files_single-copy-04 dropdown-menu-md-right"></i>
               <p>Generate Report </p>
             </a>
           </li>
           <li class="dropdown-menu-md-right">
-            <a href="./register.php" style="margin-bottom:3% !important;">
+            <a href="./registerForStaff.php" style="margin-bottom:3% !important;">
               <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
+              <p>Staff Registration</p>
             </a>
           </li>
-
           <li class="active-pro">
             <a href="./upgrade.html">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -132,24 +143,16 @@ $result = mysqli_query($conn,$query);
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons location_world"></i>
+                  <i class="now-ui-icons users_single-02"></i>
                   <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
+                    <span class="d-lg-none d-md-block">Profile</span>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <!--<a class="dropdown-item" href="admin_profile.php">Profile</a>-->
+                  <a class="dropdown-item" href="change_password.php">Change Password</a>
+                  <a class="dropdown-item" href="logout.php">Logout</a>
                 </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#pablo">
-                  <i class="now-ui-icons users_single-02"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Account</span>
-                  </p>
-                </a>
               </li>
             </ul>
           </div>
@@ -172,8 +175,7 @@ $result = mysqli_query($conn,$query);
                     <td>Last Name</td>
                     <td>First Name</td>
                     <td>Email</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
+                    <td>Actions</td>
                   </tr>
                   <tr>
                     <?php
@@ -183,11 +185,21 @@ $result = mysqli_query($conn,$query);
                     ?>
 
                         <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['firstName']; ?></td>
                         <td><?php echo $row['lastName']; ?></td>
+                        <td><?php echo $row['firstName']; ?></td>
                         <td><?php echo $row['email']; ?></td>
-                        <td><a href="#" class="btn btn-primary">Edit</a></td>
-                        <td><a href="#" class="btn btn-danger">Delete</a></td>
+                        <td>
+                          <form action="../controller/deleteAnnouncementController.php" method="post">
+                            <button type="button" rel="tooltip" class="btn btn-success btn-sm btn-icon">
+                                <i class="now-ui-icons ui-2_settings-90"></i>
+                            </button>
+                              <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                              <button type="submit" rel="tooltip" class="btn btn-danger btn-sm btn-icon" onclick="return confirm('Are you sure you want to delete this user?');">
+                                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                              </button>
+                            </form>
+                        </td>
+                        
                 </tr>
                 <?php
                     }
@@ -244,6 +256,7 @@ $result = mysqli_query($conn,$query);
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+  <!--DataTables.js-->
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 </body>
-
 </html>

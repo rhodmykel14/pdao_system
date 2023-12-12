@@ -1,8 +1,53 @@
 <?php
 
+session_start();
+
 include('connection/connection.php');
 
-$announcementName = $_POST['announcementName'];
+if (isset($_POST['saveAnnouncement'])) {
+    $announcementName = mysqli_real_escape_string($conn, $_POST['announcementName']);
+    $announcementDate = mysqli_real_escape_string($conn, $_POST['announcementDate']);
+    $announcementDesc = mysqli_real_escape_string($conn, $_POST['announcementDesc']);
+    $announcementPlace = mysqli_real_escape_string($conn, $_POST['announcementPlace']);
+
+    $query = "INSERT INTO announcement (
+        announcementName,
+        announcementDate,
+        announcementDesc,
+        announcementPlace
+    ) VALUES (
+        '$announcementName',
+        '$announcementDate',
+        '$announcementDesc',
+        '$announcementPlace'
+    )";
+
+    $query_run = mysqli_query($conn, $query);
+
+    if ($query_run) {
+        $_SESSION['message'] = "Announcement Created Successfully!";
+        header("Location: ../dashboard/announcement.php");
+        exit(0);
+    } else {
+        $_SESSION['message'] = "Announcement Not Created Successfully!";
+        header("Location: ../dashboard/announcement.php");
+        exit(0);
+    }
+}
+
+// Use $query instead of $query_run in the condition below
+if ($conn->query($query) === TRUE) {
+    header("Location: ../dashboard/announcement.php");
+    exit;
+} else {
+    echo "Error: " . $query . "<br>" . $conn->error;
+} 
+
+?>
+
+
+
+/*$announcementName = $_POST['announcementName'];
 $announcementDate = $_POST['announcementDate'];
 $announcementDesc = $_POST['announcementDesc'];
 $announcementPlace = $_POST['announcementPlace'];
@@ -18,7 +63,7 @@ $sql = "INSERT INTO announcement(
     '$announcementDate',
     '$announcementDesc',
     '$announcementPlace'
-)";
+)"; */
 
 /*
 $sql = SELECT mobileNumber FROM pwd;
@@ -47,14 +92,4 @@ foreach ($data as $data){
     }
 }
 
-ask ma'am cajes if i-implement ba ang email blast dianhi kay naa namay mail(); function ang php
-*/
-
-if ($conn->query($sql) === TRUE) {
-    header("Location: ../dashboard/announcement.php");
-    exit;
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-?>
+ask ma'am cajes if i-implement ba ang email blast dianhi kay naa namay mail(); function ang php*/

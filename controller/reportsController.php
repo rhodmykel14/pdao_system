@@ -1,4 +1,5 @@
 <?php
+
 include('connection/connection.php');
 
 $reportType = $_POST['reportType'];
@@ -48,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                     FROM pwd WHERE occupation = '{$occupation}'"; echo $sql;
                                 }
 
-    //report, view pwd info re: org in charge of their registration
+    //report, view pwd info re: org in charge of their registration; add brgy and dis. type
     elseif ($reportType == '8') {
                                     $orgAffiliated = $_POST['orgAffiliated'];
                                     $sql =  "SELECT id, pwdNumber, lastName, firstName, middleName, birthDate 

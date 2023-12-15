@@ -151,6 +151,7 @@ $result = mysqli_query($conn,$query);
                 <table class="table">
                   <thead>
                     <tr>
+                      <td>PWD Number</td>
                       <td>First Name</td>
                       <td>Middle Name</td>
                       <td>Last Name</td>
@@ -159,7 +160,6 @@ $result = mysqli_query($conn,$query);
                       <td>Gender</td>
                       <td>PWD Type</td>
                       <td>User Status</td>
-                      <td>Action</td>
                       <td>Print</td>
                     </tr>
                   </thead>
@@ -174,6 +174,7 @@ $result = mysqli_query($conn,$query);
                             //echo $pwd[]
                             ?>
                             <tr>
+                              <td><?= $pwd['pwdNumber']?>
                               <td><?= $pwd['firstName']; ?></td>
                               <td><?= $pwd['middleName']; ?></td>
                               <td><?= $pwd['lastName']; ?></td>
@@ -182,9 +183,6 @@ $result = mysqli_query($conn,$query);
                               <td><?= $pwd['gender']; ?></td>
                               <td><?= $pwd['disabilityType']; ?></td>
                               <td><?= $pwd['pwdStatus']; ?></td>
-                              <td>
-                                <a href="staff_editPWD.php?<?= $pwd['id']?>" class="btn btn-success btn-sm">Edit</a>
-                              </td>
                               <td>
                                 <a href="" class="btn btn-success btn-sm">View PWD</a>
                               </td>

@@ -9,6 +9,27 @@
   $query = "SELECT * FROM pwd";
   $result = mysqli_query($conn,$query);
 
+  // View Query for Announcement and Benefits
+  $announcementQuery = "SELECT * FROM announcement";
+  $benefitQuery = "SELECT * FROM benefits";
+
+  $announcementResult = mysqli_query($conn, $announcementQuery);
+  $benefitResult = mysqli_query($conn, $benefitQuery);
+
+  $allPWDQuery = "SELECT COUNT(*) as allPWDCount FROM pwd";
+  $allPWDResult = mysqli_query($conn, $allPWDQuery);
+  $allPWDCount = mysqli_fetch_assoc($allPWDResult)['allPWDCount'];
+
+  // Count for new members
+  $newMemberQuery = "SELECT COUNT(*) as newMemberCount FROM pwd WHERE accountType='new'";
+  $newMemberResult = mysqli_query($conn, $newMemberQuery);
+  $newMemberCount = mysqli_fetch_assoc($newMemberResult)['newMemberCount'];
+
+  // Count for renewed members
+  $renewedMemberQuery = "SELECT COUNT(*) as renewedMemberCount FROM pwd WHERE accountType='renewal'";
+  $renewedMemberResult = mysqli_query($conn, $renewedMemberQuery);
+  $renewedMemberCount = mysqli_fetch_assoc($renewedMemberResult)['renewedMemberCount'];
+
 ?>
 
 <!DOCTYPE html>
@@ -346,19 +367,12 @@
                 <h5 class="card-category">Total of PWD</h5>
                 <h4 class="card-title">New Applicants</h4>
                 <div class="dropdown">
-                  <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
-                    <i class="now-ui-icons loader_gear"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <a class="dropdown-item text-danger" href="#">Remove Data</a>
-                  </div>
+      
+                
                 </div>
               </div>
               <div class="card-body">
-                <h1 style="text-align: center;">5</h1>
+                <h1 style="text-align: center;"><?= $newMemberCount; ?></h1>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -373,19 +387,28 @@
                 <h5 class="card-category">Total of PWD</h5>
                 <h4 class="card-title">Renewed Applicants</h4>
                 <div class="dropdown">
-                  <button type="button" class="btn btn-round btn-outline-default dropdown-toggle btn-simple btn-icon no-caret" data-toggle="dropdown">
-                    <i class="now-ui-icons loader_gear"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <a class="dropdown-item text-danger" href="#">Remove Data</a>
-                  </div>
                 </div>
               </div>
               <div class="card-body">
-                <h1 style="text-align: center;">53</h1>
+                <h1 style="text-align: center;"><?= $renewedMemberCount; ?></h1>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="now-ui-icons arrows-1_refresh-69"></i> Just Updated
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">Total of PWD</h5>
+                <h4 class="card-title">All Applicants</h4>
+                <div class="dropdown">
+                </div>
+              </div>
+              <div class="card-body">
+                <h1 style="text-align: center;"><?= $allPWDCount; ?></h1>
               </div>
               <div class="card-footer">
                 <div class="stats">
@@ -396,7 +419,114 @@
           </div>
         </div>
         <div class="row">
-          
+          <div class="col md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-category">View Announcement</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <th>
+                        Event Name
+                      </th>
+                      <th>
+                        Action
+                      </th>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if ($announcementResult && mysqli_num_rows($announcementResult) > 0) {
+                        foreach ($announcementResult as $announcement) {
+                      ?>
+                          <tr>
+                            <td><?= $announcement['announcementName']; ?></td>
+                            <td>
+                              <a data-toggle="modal" data-target="#myModal<?= $announcement['id']; ?>" class="btn btn-success btn-sm">Details</a>
+                            </td>
+                          </tr>
+                      <?php
+                        }
+                      } else {
+                        echo "<h5>No Record Found.</h5>";
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+                        <?php
+                          // Reset the result pointer to the beginning
+                          mysqli_data_seek($announcementResult, 0);
+
+                          // Loop through the results again for modals
+                          foreach ($announcementResult as $announcement) {
+                        ?>
+                          <div class="modal fade" id="myModal<?= $announcement['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="announcementdeets" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="announcementdeets">Event Details</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <b><?= $announcement['announcementName']; ?></b><hr />
+                                  <p><b>Date: </b><?= $announcement['announcementDate']; ?><br />
+                                  <b>Place: </b><?= $announcement['announcementPlace']; ?><br /> <br/>
+                                  <b>Event Description:</b> </br>
+                                  <?= $announcement['announcementDesc']; ?></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <?php
+                          }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="col md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-category">View Benefits</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                          Benefit Name
+                        </th>
+                        <th>
+                          Description
+                        </th>
+                      </thead>
+                      <tbody>
+                        <?php
+                        if ($benefitResult && mysqli_num_rows($benefitResult) > 0) {
+                          while ($row = mysqli_fetch_assoc($benefitResult)) {
+                        ?>
+                            <tr>
+                              <td><?= $row['benefitName']; ?></td>
+                              <td><?= $row['benefitDescription']; ?></td>
+                            </tr>
+                        <?php
+                          }
+                        } else {
+                          echo "<h5>No Benefit Record Found.</h5>";
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col">
             <div class="card">
               <div class="card-header">
@@ -441,6 +571,7 @@
                         </td>
                         <td>
                           <?php echo $row['disabilityType']; ?>
+                        </td>
                         <td>
                           <?php echo $row['dateApplied']; ?>
                         </td>

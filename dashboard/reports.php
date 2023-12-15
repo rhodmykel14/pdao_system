@@ -30,6 +30,21 @@ require_once('../controller/connection/connection.php');
   <link href="../assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  <script>
+        function showSecondDropdown() {
+            var firstDropdown = document.getElementById("firstDropdown");
+            var secondDropdown = document.getElementById("secondDropdown");
+
+            // Check the selected value of the first dropdown
+            if (firstDropdown.value === "option1") {
+                // Show the second dropdown
+                secondDropdown.style.display = "block";
+            } else {
+                // Hide the second dropdown
+                secondDropdown.style.display = "none";
+            }
+        }
+    </script>
 </head>
 
 <body class="">

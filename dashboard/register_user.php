@@ -6,33 +6,20 @@ session_start();
 $_SESSION['username'] = 'pwd_user';
 $_SESSION['userType'] = ['user'];
 
-function generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo) {
-  // Validate input codes
-  if (!isValidCode($regionCode, 2) || !isValidCode($provinceCode, 2) ||
-      !isValidCode($municipalityCode, 2) || !isValidCode($barangayCode, 3) ||
-      !isValidCode($sequentialNo, 3)) {
-      return "Invalid input codes.";
-  }
-
-  // Concatenate codes to form the PWD ID Number
-  $pwdIDNumber = sprintf("%02d-%02d%02d-%03d-%07d", $regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
-
-  return $pwdIDNumber;
+function generateBarangayCode() {
+    // Generate a random 2-digit barangay code for Iligan City (assuming there are 44 barangays)
+    return str_pad(mt_rand(1, 44), 3, '0', STR_PAD_LEFT);
 }
 
-function isValidCode($code, $length) {
-  // Validate code length and numeric format
-  return is_numeric($code) && strlen($code) === $length;
+function generatePWDNumber() {
+    // Generate a random 6-digit PWD number
+    return str_pad(mt_rand(1, 999999), 7, '0', STR_PAD_LEFT);
 }
 
 // Example usage
-$regionCode = 10;
-$provinceCode = 03;
-$municipalityCode = 03;
-$barangayCode = 004;
-$sequentialNo = 123;
+$barangayCode = generateBarangayCode();
+$pwdNumber = generatePWDNumber();
 
-$pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
 
 ?>
 
@@ -56,6 +43,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
   <link href="../assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/css/jasny-bootstrap.min.css">
 </head>
 
 <body class="">
@@ -164,12 +152,12 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                 <h5 class="title">PWD Information</h5>
               </div>
               <div class="card-body">
-                <form action="../controller/registerPwdController.php" method="POST">
+                <form action="../controller/registerPwdController.php" method="POST" enctype="multipart/form-data">
                   <div class="row">
                     <div class="col">
                       <div class="form-check form-check-radio">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="accountType" id="new" value="new" checked>
+                            <input class="form-check-input" type="radio" name="accountType" id="new" value="new">
                             New Applicant
                             <span class="form-check-sign"></span>
                         </label>
@@ -183,7 +171,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                           <label for="pwd">Person with Disability Number</label>
-                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo $pwdIDNumber; ?>" readonly>
+                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo "10-3504-$barangayCode-$pwdNumber"; ?>" readonly>
                       </div>
                     </div>
                     <div class="col">
@@ -539,12 +527,19 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                           <label for="pwd">Status</label>
                           <select class="form-control" id="pwdStatus" name="pwdStatus">
                             <option selected>Select Status</option>
-                            <option id="employed" name="pwdStatus" value="Active">Active</option>
-                            <option id="unemployed" name="pwdStatus" value="Inactive">Inactive</option>
-                            <option id="selfemployed" name="pwdStatus" value="Deceased">Deceased</option>
+                            <option id="active" name="pwdStatus" value="Active">Active</option>
+                            <option id="inactive" name="pwdStatus" value="Inactive">Inactive</option>
+                            <option id="deceased" name="pwdStatus" value="Deceased">Deceased</option>
                           </select>
                         </div>
                     </div>
+                    <!--<div class="col-md-4 px-1">
+                      <div class="form-group">
+                        <label for="pwd">Upload File</label>
+                        <span class="fileinput-new">Add Photo</span>
+                        <input class="form-control" type="file" id="avatar" name="avatar" value="" />
+                      </div>
+                    </div>-->
                     <div class="col-md-4 pl-1">
                       <button class="btn btn-primary" type="submit" name="savePWDUser">Submit</button>
                     </div>
@@ -553,7 +548,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
               </div>
             </div>
           </div>
-          
+      </div>  
       <footer class="footer">
         <div class=" container-fluid ">
           <nav>
@@ -585,6 +580,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
     </div>
   </div>
   <!--   Core JS Files   -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>

@@ -2,36 +2,23 @@
 
 session_start();
 
-$_SESSION['username'] = ['pwdadmin', 'rm.adalid'];
-$_SESSION['userType'] = ['admin'];
+$_SESSION['username'] = 'pwd_user';
+$_SESSION['userType'] = ['user'];
 
-function generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo) {
-  // Validate input codes
-  if (!isValidCode($regionCode, 2) || !isValidCode($provinceCode, 2) ||
-      !isValidCode($municipalityCode, 2) || !isValidCode($barangayCode, 3) ||
-      !isValidCode($sequentialNo, 3)) {
-      return "Invalid input codes.";
-  }
-
-  // Concatenate codes to form the PWD ID Number
-  $pwdIDNumber = sprintf("%02d-%02d%02d-%03d-%07d", $regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
-
-  return $pwdIDNumber;
+function generateBarangayCode() {
+  // Generate a random 2-digit barangay code for Iligan City (assuming there are 44 barangays)
+  return str_pad(mt_rand(1, 44), 3, '0', STR_PAD_LEFT);
 }
 
-function isValidCode($code, $length) {
-  // Validate code length and numeric format
-  return is_numeric($code) && strlen($code) === $length;
+function generatePWDNumber() {
+  // Generate a random 6-digit PWD number
+  return str_pad(mt_rand(1, 999999), 7, '0', STR_PAD_LEFT);
 }
 
 // Example usage
-$regionCode = 10;
-$provinceCode = 03;
-$municipalityCode = 03;
-$barangayCode = 004;
-$sequentialNo = 123;
+$barangayCode = generateBarangayCode();
+$pwdNumber = generatePWDNumber();
 
-$pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode, $barangayCode, $sequentialNo);
 
 
 ?>
@@ -74,109 +61,9 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
-        <ul class="nav">
-          <li class="">
-            <a href="./dashboard.php">
-              <i class="now-ui-icons design_app"></i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="dropdown-btn 1 ">
-            <a href="./user.php">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>Users</p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./benefits.php">
-            <i class="now-ui-icons location_map-big dropdown-menu-md-right"></i>
-            <p>Benefits </p></a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./announcement.php">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Announcement</p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right">
-            <a style="margin-bottom:3% !important;" href="./reports.php">
-              <i class="now-ui-icons files_single-copy-04 dropdown-menu-md-right"></i>
-              <p>Generate Report </p>
-            </a>
-          </li>
-          <li class="dropdown-menu-md-right active">
-            <a href="./register.php" style="margin-bottom:3% !important;">
-              <i class="now-ui-icons now-ui-icons tech_laptop"></i>
-              <p>Register</p>
-            </a>
-          </li>
-
-          <li class="active-pro">
-            <a href="./upgrade.html">
-              <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-              <p>Upgrade to PRO</p>
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
     <div class="main-panel" id="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-              <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
-            </div>
-            <a class="navbar-brand" href="#pablo">PWD Registration Form</a>
-          </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="now-ui-icons ui-1_zoom-bold"></i>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#pablo">
-                  <i class="now-ui-icons media-2_sound-wave"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Stats</span>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="now-ui-icons users_single-02"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Profile</span>
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <!--<a class="dropdown-item" href="admin_profile.php">Profile</a>-->
-                  <a class="dropdown-item" href="change_password.php">Change Password</a>
-                  <a class="dropdown-item" href="logout.php">Logout</a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!-- End Navbar -->
       <div class="panel-header panel-header-sm">
       </div>
       <div class="content">
@@ -192,7 +79,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                     <div class="col">
                       <div class="form-check form-check-radio">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="accountType" id="new" value="new" checked>
+                            <input class="form-check-input" type="radio" name="accountType" id="new" value="new">
                             New Applicant
                             <span class="form-check-sign"></span>
                         </label>
@@ -206,7 +93,7 @@ $pwdIDNumber = generatePWDIDNumber($regionCode, $provinceCode, $municipalityCode
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                           <label for="pwd">Person with Disability Number</label>
-                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo $pwdIDNumber; ?>" readonly>
+                          <input type="text" class="form-control" id="pwdNumber" name="pwdNumber" placeholder="RR-PPMM-BBB-NNNNNNN" value="<?php echo "10-3504-$barangayCode-$pwdNumber"; ?>" readonly>
                       </div>
                     </div>
                     <div class="col">

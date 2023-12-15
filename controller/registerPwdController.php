@@ -4,8 +4,13 @@ session_start();
 
 include('connection/connection.php');
 
-if(isset($_POST['savePWDUser']))
-{
+if (isset($_POST['savePWDUser'])) {
+    // Handle image upload
+    $filename = $_FILES["avatar"]["name"];
+    $tempname = $_FILES["avatar"]["tmp_name"];
+    $folder = ".assets/img/pdao-avatar/" . $filename;
+
+    // Get all the submitted data from the form
     $pwdNumber = mysqli_real_escape_string($conn, $_POST['pwdNumber']);
     $dateApplied = mysqli_real_escape_string($conn, $_POST['dateApplied']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -46,6 +51,7 @@ if(isset($_POST['savePWDUser']))
     $guardiansName_2 = mysqli_real_escape_string($conn, $_POST['guardiansName_2']);
     $representativeName = mysqli_real_escape_string($conn, $_POST['representativeName']);
     $pwdStatus = mysqli_real_escape_string($conn, $_POST['pwdStatus']);
+
 
     $query = "INSERT INTO pwd(
         accountType,
@@ -132,8 +138,15 @@ if(isset($_POST['savePWDUser']))
         '$representativeName',
         '$pwdStatus'
     )";
-    
+
     $query_run = mysqli_query($conn,$query);
+
+    if (move_uploaded_file($tempname, $folder)) {
+        echo "<h3>Image uploaded successfully!</h3>";
+    } else {
+        echo "<h3>Failed to upload image!</h3>";
+    }
+
     if($query_run)
     {
         $_SESSION['message'] = "PWD User Created Successfully!";

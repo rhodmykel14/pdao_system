@@ -55,5 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                     $sql =  "SELECT id, pwdNumber, lastName, firstName, middleName, birthDate 
                                     FROM pwd WHERE orgAffiliated = '{$orgAffiliated}'"; echo $sql;
                                 }
+    elseif ($reportType == '9') { //report by brgy, pero sort nlng alphabetically
+                                    $barangay = $_POST['orgAffiliated'];
+                                    $sql =  "SELECT id, pwdNumber, lastName, firstName, middleName, birthDate 
+                                    FROM pwd WHERE orgAffiliated = '{$orgAffiliated}'"; echo $sql;
+                                }
+
 }
 ?>

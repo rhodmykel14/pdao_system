@@ -7,13 +7,6 @@ $_SESSION['userType'] = ['staff'];
 
 require_once('../controller/connection/connection.php');
 
-if (isset($_GET['id'])){
-  $id=$_GET['id'];
-  $update=mysqli_query($conn,"UPDATE SET 'pwd' WHERE 'id'='$id'");
-}
-
-$query = "SELECT * FROM pwd";
-$result = mysqli_query($conn,$query);
 
 
 ?>
@@ -38,8 +31,6 @@ $result = mysqli_query($conn,$query);
   <link href="../assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
-  
-
 </head>
 
 <body class="">
@@ -93,7 +84,12 @@ $result = mysqli_query($conn,$query);
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">User Lists</a>
+            <nav aria-label="breadcrumb" role="navigation">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="staff_pwdUser.php">User Lists</a></li>
+                <li class="breadcrumb-item active" aria-current="page">View PWD</li>
+              </ol>
+            </nav>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -142,60 +138,84 @@ $result = mysqli_query($conn,$query);
       </div>
       <div class="content">
         <div class="row">
-          <div class="col">
+          <div class="col-md-8">
             <div class="card">
               <div class="card-header">
-                <h5>User Lists</h5>
+                <h5 class="title">PWD Information</h5>
               </div>
               <div class="card-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>PWD Number</th>
-                      <th>First Name</th>
-                      <th>Middle Name</th>
-                      <th>Last Name</th>
-                      <th>Civil Status</th>
-                      <th>Contact Number</th>
-                      <th>Gender</th>
-                      <th>PWD Type</th>
-                      <th>User Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                      $query_run = mysqli_query($conn, $query);
 
-                      if(mysqli_num_rows($query_run) > 0)
-                      {
-                        foreach($query_run as $pwd)
-                        {
-                            //echo $pwd[]
-                            ?>
-                            <tr>
-                              <td><?= $pwd['pwdNumber']?>
-                              <td><?= $pwd['firstName']; ?></td>
-                              <td><?= $pwd['middleName']; ?></td>
-                              <td><?= $pwd['lastName']; ?></td>
-                              <td><?= $pwd['civilStatus']; ?></td>
-                              <td><?= $pwd['mobileNumber']; ?></td>
-                              <td><?= $pwd['gender']; ?></td>
-                              <td><?= $pwd['disabilityType']; ?></td>
-                              <td>
-                                <a href="viewPWD.php?id=<?= $pwd['id']; ?>" class="btn btn-success btn-sm">View PWD</a>
-                              </td>
-                            </tr>
-                            <?php
-                        }
-                      }
-                      else
-                      {
-                      echo "<h5> No Record Found. </h5>";
-                      }
+                <?php 
+                if(isset($_GET['id']))
+                {
+                  $id = mysqli_real_escape_string($conn, $_GET['id']);
+                  $query = "SELECT * FROM `pwd` WHERE id='$id' ";
+                  $query_run = mysqli_query($conn, $query);
+
+                  if(mysqli_num_rows($query_run) > 0)
+                  {
+                      $pwd = mysqli_fetch_array($query_run);
                       ?>
-                  </tbody> 
-                </table>
+                      <p>
+                        <b>Person with Disability Number: </b><?= $pwd['pwdNumber']; ?><br>
+                        <hr>
+                        <b>Last Name: </b> <?= $pwd['lastName']; ?> <br>
+                        <b>First Name: </b> <?= $pwd['firstName']; ?> <br>
+                        <b>Middle Name: </b> <?= $pwd['middleName']; ?> <br>
+                        <hr>
+                        <b>Gender: </b> <?= $pwd['gender']; ?> <br>
+                        <b>Civil Status: </b> <?= $pwd['civilStatus']; ?> <br>
+                        <b>Educational Attainment: </b> <?= $pwd['educationalAttainment']; ?> <br>
+                        <hr>
+                        <b>Address: </b> <?= $pwd['houseNumber']; ?>, 
+                        <?= $pwd['barangay']; ?>,
+                        <?= $pwd['city']; ?>,
+                        <?= $pwd['province']; ?>, Region <?= $pwd['region']; ?> <br>
+                        <hr>
+                        <b>Father's Name: </b> <?= $pwd['fathersName']; ?><br>
+                        <b>Mother's Name: </b> <?= $pwd['mothersName']; ?><br>
+                        <b>Guardians's Name: </b> <?= $pwd['guardiansName']; ?><br>
+                        <hr>
+                        <b>Landline Number: </b> <?= $pwd['landlineNumber']; ?><br>
+                        <b>Mobile Number: </b> <?= $pwd['mobileNumber']; ?><br>
+                        <b>Email Address: </b> <?= $pwd['email']; ?><br>
+                        <hr>
+                      </p>
+                      <?php
+                  }
+                  else 
+                  {
+                      echo "<h4> Wala </h4>";
+                  }
+                }
+                ?>
+                </div>
               </div>
+            </div>
+          <div class="col-md-4">
+            <div class="card card-user">
+              <div class="image">
+                <img src="../assets/img/bg5.jpg" alt="...">
+              </div>
+              <div class="card-body">
+                <div class="author">
+                  <a href="#">
+                    <img class="avatar border-gray" src="../assets/img/pdao_logo.jpg" alt="...">
+                    <h5 class="title"><?= $pwd['firstName'], " ", substr($pwd['middleName'], 0, 1),". ", $pwd['lastName']; ?></h5>
+                  </a>
+                </div>
+                <p>
+                    <b>Disability Type:</b> <?= $pwd['disabilityType']; ?> <br>
+                    <b>Account Type:</b> <?= $pwd['accountType']; ?>
+                    <hr>
+                <p>
+                  <b>Date Applied: </b> <?= $pwd['dateApplied']; ?> 
+                  <hr>
+                  <a href="" class="btn btn-success btn-sm">Print ID</a>
+                </p>
+                </p>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -244,7 +264,5 @@ $result = mysqli_query($conn,$query);
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
-  <!--DataTables.js-->
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 </body>
 </html>

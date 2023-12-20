@@ -34,15 +34,40 @@ require_once('../controller/connection/connection.php');
         function showSecondDropdown() {
             var firstDropdown = document.getElementById("firstDropdown");
             var secondDropdown = document.getElementById("secondDropdown");
+            var thirdDropdown = document.getElementById("thirdDropdown");
+            var fourthDropdown = document.getElementById("fourthDropdown");
+            var fifthDropdown = document.getElementById("fifthDropdown");
+            var sixthDropdown = document.getElementById("sixthDropdown");
+            var seventhDropdown = document.getElementById("seventhDropdown");
+            var eighthDropdown = document.getElementById("eighthDropdown");
+            var ninthDropdown = document.getElementById("ninthDropdown");
 
-            // Check the selected value of the first dropdown
+            secondDropdown.style.display = "none";
+            thirdDropdown.style.display = "none";
+            fourthDropdown.style.display = "none";
+            fifthDropdown.style.display = "none";
+            sixthDropdown.style.display = "none";
+            seventhDropdown.style.display = "none";
+            eighthDropdown.style.display = "none";
+
+
             if (firstDropdown.value === "option1") {
-                // Show the second dropdown
                 secondDropdown.style.display = "block";
-            } else {
-                // Hide the second dropdown
-                secondDropdown.style.display = "none";
-            }
+            } else if (firstDropdown.value === "option2"){
+                thirdDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option3"){
+                fourthDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option4"){
+                fifthDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option5"){
+                sixthDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option6"){
+                seventhDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option7"){
+                eighthDropdown.style.display = "block";
+            } else if (firstDropdown.value === "option8"){
+                eighthDropdown.style.display = "block";
+            } 
         }
     </script>
 </head>
@@ -184,22 +209,75 @@ require_once('../controller/connection/connection.php');
                         <option id="age" class="form-control" name="" value="option1">Age</option>
                         <option id="dateApplied" class="form-control" name="" value="option2">Date of Registry Confirmation</option>
                         <option id="educationalAttainment" class="form-control" name="" value="option3">Educational Attainment</option>
-                        <option id="empStatus" class="form-control" name="" value="option3">Employment Status</option>
-                        <option id="empCategory" class="form-control" name="" value="option3">Employment Categorie</option>
-                        <option id="empType" class="form-control" name="" value="option3">Employment Type</option>
-                        <option id="occupation" class="form-control" name="" value="option3">Occupation</option>
-                        <option id="org" class="form-control" name="" value="option3">Overseeing Organization</option>
+                        <option id="empStatus" class="form-control" name="" value="option4">Employment Status</option>
+                        <option id="empCategory" class="form-control" name="" value="option5">Employment Categorie</option>
+                        <option id="empType" class="form-control" name="" value="option6">Employment Type</option>
+                        <option id="occupation" class="form-control" name="" value="option7">Occupation</option>
+                        <option id="org" class="form-control" name="" value="option8">Overseeing Organization</option>
+                        <option id="barangay" class="form-control" name="" value="option9">Barangay</option>
+                        <option id="distype" class="form-control" name="" value="option10">Disability Type</option>
                       </select>
                   </div>
                   <!-- hidden/conditional dropdowns, referring CSS later -->
                   <div class="form-group col-md-4" id="secondDropdown">
-                    <label for="nestedDropdown">Select Nested Option:</label>
+                    <label for="nestedDropdown">Select Educational Attainment:</label>
                       <select id="nestedDropdown" class="form-control" >
                           <option class="form-control" value="nestedOption1">Nested Option 1</option>
                           <option class="form-control" value="nestedOption2">Nested Option 2</option>
                           <option class="form-control" value="nestedOption3">Nested Option 3</option>
                       </select>
                   </div>
+                  <div class="form-group col-md-4" id="thirdDropdown">
+                    <label for="nestedDropdown">Select Employment Status:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-4" id="fourthDropdown">
+                    <label for="nestedDropdown">Select Employment Category:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-4" id="fifthDropdown">
+                    <label for="nestedDropdown">Select Employment Type:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-4" id="sixthDropdown">
+                    <label for="nestedDropdown">Select Occupation:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-4" id="seventhDropdown">
+                    <label for="nestedDropdown">Select Overseeing Organization:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-4" id="eighthDropdown">
+                    <label for="nestedDropdown">Select Disability Type:</label>
+                      <select id="nestedDropdown" class="form-control" >
+                          <option class="form-control" value="nestedOption1">Nested Option 1</option>
+                          <option class="form-control" value="nestedOption2">Nested Option 2</option>
+                          <option class="form-control" value="nestedOption3">Nested Option 3</option>
+                      </select>
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
                 </form>    
               </div>

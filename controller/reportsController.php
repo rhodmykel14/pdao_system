@@ -6,6 +6,8 @@ $reportType = $_POST['reportType'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
+    
+    $firstDropdownValue = $_POST["firstDropdown"];
     //unsure if $sql var should be accessible to all conditions,,,
     $sql = "";
 
@@ -56,9 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                                     FROM pwd WHERE orgAffiliated = '{$orgAffiliated}'"; echo $sql;
                                 }
     elseif ($reportType == '9') { //report by brgy, pero sort nlng alphabetically
-                                    $barangay = $_POST['orgAffiliated'];
+                                    $barangay = $_POST['barangay'];
                                     $sql =  "SELECT id, pwdNumber, lastName, firstName, middleName, birthDate 
-                                    FROM pwd WHERE orgAffiliated = '{$orgAffiliated}'"; echo $sql;
+                                    FROM pwd WHERE barangay = '{$barangay}'"; echo $sql;
                                 }
 
 }

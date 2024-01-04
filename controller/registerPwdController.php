@@ -11,6 +11,7 @@ if (isset($_POST['savePWDUser'])) {
     $folder = ".assets/img/pdao-avatar/" . $filename;
 
     // Get all the submitted data from the form
+    $accountType = mysqli_real_escape_string($conn, $_POST['accountType']);
     $pwdNumber = mysqli_real_escape_string($conn, $_POST['pwdNumber']);
     $dateApplied = mysqli_real_escape_string($conn, $_POST['dateApplied']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
